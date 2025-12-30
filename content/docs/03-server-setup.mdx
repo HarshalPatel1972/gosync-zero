@@ -1,0 +1,68 @@
+---
+title: Server Setup
+description: Deploy the GoSync server binary on any platform
+---
+
+# Server Setup
+
+The GoSync server is a standalone binary. You can run it on Linux, Mac, or Windows.
+
+## Installation
+
+Download the latest release from our [GitHub Releases](https://github.com/HarshalPatel1972/GoSync/releases) page.
+
+```bash
+# Linux / Mac
+wget https://github.com/HarshalPatel1972/GoSync/releases/download/v0.1.0/gosync-server
+chmod +x gosync-server
+./gosync-server
+```
+
+## Configuration
+
+By default, the server runs on port `8080` and uses an embedded SQLite database (`gosync.db`). No setup required.
+
+To customize it, set environment variables:
+
+```bash
+export PORT=3000
+export DB_TYPE=postgres
+export DB_DSN="user=postgres password=secret dbname=mydb sslmode=disable"
+./gosync-server
+```
+
+### Environment Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `PORT` | `8080` | Server port |
+| `DB_TYPE` | `sqlite` | Database type (`sqlite`, `postgres`) |
+| `DB_DSN` | `gosync.db` | Database connection string |
+| `LOG_LEVEL` | `info` | Log verbosity (`debug`, `info`, `warn`, `error`) |
+
+## Docker Deployment
+
+For production, we recommend Docker.
+
+```yaml
+version: '3'
+services:
+  gosync:
+    image: harshalpatel1972/gosync:latest
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - LOG_LEVEL=info
+```
+
+Run with:
+
+```bash
+docker-compose up -d
+```
+
+---
+
+**Next:** [Understand conflict resolution →](/docs/conflict-resolution)

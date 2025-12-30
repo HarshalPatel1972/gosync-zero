@@ -9,7 +9,12 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@harshalpatel2868/gosync-client": "^1.0.1",
+    "framer-motion": "^12.23.26",
+    "gray-matter": "^4.0.3",
+    "idb-keyval": "^6.2.2",
     "next": "16.1.1",
+    "next-mdx-remote": "^5.0.0",
     "react": "19.2.3",
     "react-dom": "19.2.3"
   },

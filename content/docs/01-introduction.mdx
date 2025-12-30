@@ -1,0 +1,31 @@
+---
+title: Introduction
+description: Learn what GoSync is and why it solves the Two-Language Problem
+---
+
+# Introduction
+
+**GoSync** is an offline-first synchronization engine designed to solve the "Two-Language Problem" in modern web development.
+
+Most sync solutions force you to duplicate business logic: writing validation in JavaScript for the frontend and again in Go/Node/Python for the backend. GoSync eliminates this by running a **Shared Brain**.
+
+## Why GoSync?
+
+- **Unified Logic:** Write your conflict resolution and validation rules once in Go. We compile it to WASM for the browser and a native binary for the server.
+- **Bandwidth Efficient:** Uses **Merkle Trees** to compare datasets. If you have 1GB of data but only changed 1KB, we only send 1KB.
+- **True Offline:** Your app works perfectly without internet. We queue changes in **IndexedDB** and sync automatically when the connection returns.
+- **Privacy-Centric:** Self-hosted. No data ever touches a third-party cloud.
+
+## Architecture
+
+At its core, GoSync is a matching engine. It maintains a Merkle Tree of your dataset on both the Client (Browser) and Server.
+
+1. **Client:** The Go-WASM worker intercepts data changes and writes them to IndexedDB.
+2. **Sync:** When online, it exchanges Merkle Root Hashes with the server.
+3. **Delta:** If hashes differ, it drills down to find the specific items that changed and exchanges only those.
+
+## Current Status
+
+> **Note:** GoSync is currently in **Public Beta (v0.1.0)**. While the core engine is stable, APIs may change.
+
+Ready to build? [Get Started →](/docs/quick-start)

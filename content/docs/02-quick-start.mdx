@@ -1,0 +1,69 @@
+---
+title: Quick Start
+description: Add offline sync to your app in 5 minutes
+---
+
+# Quick Start
+
+In this guide, we will add offline sync to a simple Vanilla JS or React application.
+
+## 1. Install the SDK
+
+```bash
+npm install @harshalpatel2868/gosync-client
+```
+
+## 2. Initialize the Engine
+
+GoSync runs in a Web Worker to keep your UI buttery smooth. Initialize it as early as possible in your app.
+
+```javascript
+import { GoSync } from '@harshalpatel2868/gosync-client';
+
+// Initialize with your backend URL
+await GoSync.init({
+  url: 'ws://localhost:8080/sync',
+  debug: true // Enable console logs for development
+});
+```
+
+## 3. Define Your Data
+
+GoSync is schema-agnostic, but it needs a standard structure to track changes.
+
+```javascript
+const task = {
+  id: 'uuid-1234',
+  title: 'Buy Groceries',
+  completed: false,
+  updated_at: new Date().toISOString() // Critical for LWW resolution
+};
+```
+
+## 4. Add & Retrieve Data
+
+Don't use `fetch()`. Use the GoSync API. It handles the saving (IndexedDB) and the syncing (WebSocket) for you.
+
+```javascript
+// Add an item (Saved to IndexedDB immediately)
+await GoSync.add('todos', task);
+
+// Get all items (Returns from local cache instantly)
+const allTodos = await GoSync.get('todos');
+console.log(allTodos);
+```
+
+## 5. Listen for Updates
+
+When data comes in from the server (e.g., another user edits a task), your UI needs to know.
+
+```javascript
+GoSync.subscribe('todos', (newData) => {
+  console.log('New data arrived:', newData);
+  renderApp(newData);
+});
+```
+
+---
+
+**Next:** [Set up your server →](/docs/server-setup)

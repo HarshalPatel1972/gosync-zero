@@ -1,0 +1,68 @@
+---
+title: Conflict Resolution
+description: How GoSync handles concurrent edits from multiple users
+---
+
+# Conflict Resolution
+
+Distributed systems are messy. Two users might edit the same document while offline. How do we decide who wins?
+
+## Last-Write-Wins (LWW)
+
+GoSync currently uses a **Last-Write-Wins** strategy based on high-precision timestamps.
+
+### How It Works
+
+1. **User A** changes Title to "Draft" at `10:00:01.000`
+2. **User B** changes Title to "Final" at `10:00:05.000`
+3. **Result:** "Final" wins. User A's edit is overwritten.
+
+```javascript
+// Both versions arrive at the server
+const versionA = { title: "Draft", updated_at: "2024-01-01T10:00:01.000Z" };
+const versionB = { title: "Final", updated_at: "2024-01-01T10:00:05.000Z" };
+
+// GoSync compares timestamps
+// versionB.updated_at > versionA.updated_at
+// Winner: versionB
+```
+
+## Why LWW?
+
+- **Simplicity:** It requires zero configuration from you.
+- **Predictability:** The latest action is usually the "correct" one for most CRUD apps (To-Do lists, Settings, Inventory).
+- **Performance:** No complex merge algorithms needed.
+
+## Handling Conflicts in Your App
+
+While GoSync handles the technical merge, you might want to notify users when their changes were overwritten.
+
+```javascript
+GoSync.onConflict('todos', (local, remote, winner) => {
+  if (winner === 'remote') {
+    toast.warn('Your changes were overwritten by a newer version');
+  }
+});
+```
+
+## Timestamp Precision
+
+GoSync uses **millisecond-precision ISO 8601 timestamps**. Make sure your client always includes the `updated_at` field:
+
+```javascript
+const item = {
+  id: 'uuid-1234',
+  title: 'My Task',
+  updated_at: new Date().toISOString() // "2024-01-01T10:00:01.123Z"
+};
+```
+
+> **Tip:** If two changes have the exact same timestamp (extremely rare), the server breaks the tie using the item's `id` alphabetically.
+
+## Future Roadmap
+
+> **Coming Soon:** We are researching **CRDTs (Conflict-free Replicated Data Types)** for future versions to support collaborative text editing (Google Docs style).
+
+---
+
+**← Back to [Introduction](/docs/introduction)**

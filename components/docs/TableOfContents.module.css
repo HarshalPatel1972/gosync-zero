@@ -1,0 +1,54 @@
+.toc {
+  position: sticky;
+  top: 32px;
+  width: 220px;
+  max-height: calc(100vh - 64px);
+  overflow-y: auto;
+  padding-left: 24px;
+  border-left: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.tocHeader {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+}
+
+.tocNav {
+  display: block;
+}
+
+.tocList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tocLink {
+  display: block;
+  padding: 6px 0;
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+  transition: color 0.2s ease;
+  line-height: 1.4;
+}
+
+.tocLink:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.tocLink.active {
+  color: #00E699;
+}
+
+@media (max-width: 1200px) {
+  .toc {
+    display: none;
+  }
+}

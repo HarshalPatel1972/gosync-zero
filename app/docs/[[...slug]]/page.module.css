@@ -1,0 +1,21 @@
+.pageWrapper {
+  display: flex;
+  gap: 48px;
+  max-width: 1000px;
+}
+
+.article {
+  flex: 1;
+  min-width: 0;
+  max-width: 720px;
+}
+
+@media (max-width: 1200px) {
+  .pageWrapper {
+    gap: 0;
+  }
+  
+  .article {
+    max-width: 100%;
+  }
+}
