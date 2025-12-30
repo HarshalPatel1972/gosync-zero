@@ -10,7 +10,7 @@
 
 **Write once. Run everywhere. Sync automatically.**
 
-[Live Demo](https://gosync.io) · [Documentation](https://gosync.io/docs) · [NPM Package](https://www.npmjs.com/package/@harshalpatel2868/gosync-client)
+[Live Demo](https://gosync-zero.vercel.app) · [Documentation](https://gosync-zero.vercel.app/docs) · [NPM Package](https://www.npmjs.com/package/@harshalpatel2868/gosync-client)
 
 </div>
 
@@ -121,12 +121,12 @@ npm run build
 
 ## 📚 Documentation
 
-Visit our [documentation](https://gosync.io/docs) for:
+Visit our [documentation](https://gosync-zero.vercel.app/docs) for:
 
-- [Introduction](https://gosync.io/docs/introduction) - Why GoSync?
-- [Quick Start](https://gosync.io/docs/quick-start) - Get started in 5 minutes
-- [Server Setup](https://gosync.io/docs/server-setup) - Deploy the Go server
-- [Conflict Resolution](https://gosync.io/docs/conflict-resolution) - Understanding LWW
+- [Introduction](https://gosync-zero.vercel.app/docs/introduction) - Why GoSync?
+- [Quick Start](https://gosync-zero.vercel.app/docs/quick-start) - Get started in 5 minutes
+- [Server Setup](https://gosync-zero.vercel.app/docs/server-setup) - Deploy the Go server
+- [Conflict Resolution](https://gosync-zero.vercel.app/docs/conflict-resolution) - Understanding LWW
 
 ---
 
