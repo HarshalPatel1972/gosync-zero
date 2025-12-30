@@ -8,6 +8,9 @@ export default function FeaturesGrid() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
+  // Ordered for perfect 3-column grid:
+  // Row 1: offline (2 rows tall) | bandwidth | deadlock
+  // Row 2: (offline continues)  | privacy   | storage
   const features = [
     {
       id: "offline",
@@ -37,8 +40,8 @@ export default function FeaturesGrid() {
           />
         </svg>
       ),
-      color: "cyan",
-      size: "large",
+      color: "green",
+      gridArea: "offline",
     },
     {
       id: "bandwidth",
@@ -57,7 +60,7 @@ export default function FeaturesGrid() {
         </svg>
       ),
       color: "purple",
-      size: "medium",
+      gridArea: "bandwidth",
     },
     {
       id: "deadlock",
@@ -89,7 +92,7 @@ export default function FeaturesGrid() {
         </svg>
       ),
       color: "emerald",
-      size: "medium",
+      gridArea: "deadlock",
     },
     {
       id: "privacy",
@@ -113,8 +116,8 @@ export default function FeaturesGrid() {
           />
         </svg>
       ),
-      color: "magenta",
-      size: "medium",
+      color: "teal", // Changed from magenta (red) to teal (trust)
+      gridArea: "privacy",
     },
     {
       id: "storage",
@@ -155,8 +158,8 @@ export default function FeaturesGrid() {
           <circle cx="28" cy="28" r="2" fill="currentColor" />
         </svg>
       ),
-      color: "cyan",
-      size: "wide",
+      color: "green",
+      gridArea: "storage",
     },
   ];
 
@@ -203,7 +206,7 @@ export default function FeaturesGrid() {
           {features.map((feature) => (
             <motion.div
               key={feature.id}
-              className={`${styles.card} ${styles[feature.size]} ${styles[feature.color]}`}
+              className={`${styles.card} ${styles[feature.gridArea]} ${styles[feature.color]}`}
               variants={itemVariants}
             >
               <div className={styles.cardIcon}>{feature.icon}</div>
