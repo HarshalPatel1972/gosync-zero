@@ -95,28 +95,35 @@ export default function FeaturesGrid() {
       gridArea: "deadlock",
     },
     {
-      id: "privacy",
-      title: "Privacy-Centric",
+      id: "typesafe",
+      title: "Type-Safe",
       description:
-        "Self-hosted binary. Your data never touches third-party clouds. GDPR and HIPAA friendly by design.",
+        "End-to-end type safety from database to browser. No more 'any' casting. Go structs define the contract everywhere.",
       icon: (
         <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
           <path
-            d="M20 6L8 12V20C8 28 20 34 20 34C20 34 32 28 32 20V12L20 6Z"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M15 20L18 23L25 16"
+            d="M8 12L14 20L8 28"
             stroke="currentColor"
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
+          <path
+            d="M32 12L26 20L32 28"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M24 8L16 32"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
         </svg>
       ),
-      color: "teal", // Changed from magenta (red) to teal (trust)
+      color: "teal",
       gridArea: "privacy",
     },
     {

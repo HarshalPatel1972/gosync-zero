@@ -263,7 +263,7 @@ export default function InteractiveDemo() {
                 Boot GoSync Engine
               </button>
               <p className={styles.idleHint}>
-                Lazy-loads WASM binary (~1.2MB) to keep initial page fast
+                (Loads real WASM binary ~1.2MB. Runs locally in your browser.)
               </p>
             </div>
           )}

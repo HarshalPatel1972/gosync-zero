@@ -12,7 +12,7 @@ export default function CodeExample() {
   const codeLines = [
     { line: 1, content: 'package main', tokens: [{ type: 'keyword', text: 'package' }, { type: 'text', text: ' main' }] },
     { line: 2, content: '', tokens: [] },
-    { line: 3, content: 'import "github.com/gosync/gosync"', tokens: [{ type: 'keyword', text: 'import' }, { type: 'string', text: ' "github.com/gosync/gosync"' }] },
+    { line: 3, content: 'import "github.com/harshalpatel2868/gosync"', tokens: [{ type: 'keyword', text: 'import' }, { type: 'string', text: ' "github.com/harshalpatel2868/gosync"' }] },
     { line: 4, content: '', tokens: [] },
     { line: 5, content: 'type Task struct {', tokens: [{ type: 'keyword', text: 'type' }, { type: 'type', text: ' Task' }, { type: 'keyword', text: ' struct' }, { type: 'text', text: ' {' }] },
     { line: 6, content: '    ID        string    `gosync:"pk"`', tokens: [{ type: 'text', text: '    ID        ' }, { type: 'type', text: 'string' }, { type: 'string', text: '    `gosync:"pk"`' }] },

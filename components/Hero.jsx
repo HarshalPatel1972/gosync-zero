@@ -87,8 +87,8 @@ export default function Hero() {
 
         {/* CTA Buttons */}
         <motion.div className={styles.ctas} variants={itemVariants}>
-          <a href="#roadmap" className={styles.ctaPrimary}>
-            Get Started Free
+          <a href="/docs" className={styles.ctaPrimary}>
+            Get Started
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
               <path
                 d="M7.5 5L12.5 10L7.5 15"
@@ -100,7 +100,7 @@ export default function Hero() {
             </svg>
           </a>
           <a
-            href="https://github.com/gosync/gosync"
+            href="https://github.com/HarshalPatel1972/gosync-zero"
             target="_blank"
             rel="noopener noreferrer"
             className={styles.ctaSecondary}
