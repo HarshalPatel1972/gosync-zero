@@ -400,6 +400,8 @@
   border-radius: 2px;
   box-shadow: 0 0 20px rgba(0, 230, 153, 0.3);
   transition: all 0.3s ease;
+  top: 50%;
+  margin-top: -2px; /* half of height (4px / 2) */
 }
 
 .pipeLine.pipeDisconnected {
@@ -416,7 +418,7 @@
   border-radius: 50%;
   box-shadow: 0 0 16px #00E699, 0 0 32px rgba(0, 230, 153, 0.5);
   top: 50%;
-  transform: translateY(-50%);
+  margin-top: -7px; /* half of height (14px / 2) - avoids Framer Motion transform conflict */
   z-index: 10;
 }
 
