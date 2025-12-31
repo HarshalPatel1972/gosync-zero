@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import { compileMDX } from "next-mdx-remote/rsc";
+import remarkGfm from "remark-gfm";
 import { notFound } from "next/navigation";
 import TableOfContents from "@/components/docs/TableOfContents";
 import CodeBlock from "@/components/docs/CodeBlock";
@@ -102,6 +103,11 @@ const components = {
       <table className={mdxStyles.table}>{children}</table>
     </div>
   ),
+  thead: ({ children }) => <thead>{children}</thead>,
+  tbody: ({ children }) => <tbody>{children}</tbody>,
+  tr: ({ children }) => <tr>{children}</tr>,
+  th: ({ children }) => <th>{children}</th>,
+  td: ({ children }) => <td>{children}</td>,
   ul: ({ children }) => <ul className={mdxStyles.ul}>{children}</ul>,
   ol: ({ children }) => <ol className={mdxStyles.ol}>{children}</ol>,
   li: ({ children }) => <li className={mdxStyles.li}>{children}</li>,
@@ -133,6 +139,11 @@ export default async function DocsPage({ params }) {
   const { content: mdxContent } = await compileMDX({
     source: content,
     components,
+    options: {
+      mdxOptions: {
+        remarkPlugins: [remarkGfm],
+      },
+    },
   });
 
   return (
