@@ -1,0 +1,728 @@
+/* ============================================
+   ROADMAP EVOLUTION - HIGH-FIDELITY SCHEMATICS
+   "Show the Interface"
+   ============================================ */
+
+.section {
+  position: relative;
+  height: 300vh; /* 3 screens tall for scroll track */
+  background: var(--void-surface);
+}
+
+.stickyContainer {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* ============================================
+   LEFT COLUMN - NARRATIVE
+   ============================================ */
+
+.narrativeColumn {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 5rem;
+  padding-right: 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+.narrativeContent {
+  max-width: 480px;
+}
+
+.sectionHeader {
+  margin-bottom: var(--space-lg);
+}
+
+.sectionLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--sync-green);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-sm);
+}
+
+.sectionLabel::before {
+  content: "";
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--sync-green);
+}
+
+.sectionTitle {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+/* ============================================
+   PROGRESS TRACK - Timeline with Traveling Dot
+   ============================================ */
+
+.progressTrack {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 320px;
+  height: 40px;
+  margin-bottom: var(--space-xl);
+}
+
+/* The continuous background line */
+.trackLine {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 3px;
+  background: var(--void-border);
+  border-radius: 2px;
+  transform: translateY(-50%);
+  overflow: hidden;
+}
+
+/* The filled/completed portion of the track */
+.trackFill {
+  height: 100%;
+  background: var(--sync-green);
+  border-radius: 2px;
+}
+
+/* Small milestone marker dots */
+.milestoneDot {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--void-surface);
+  border: 2px solid var(--void-border);
+  z-index: 2;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.milestonePassed {
+  background: var(--sync-green);
+  border-color: var(--sync-green);
+}
+
+/* The traveling glowing indicator */
+.travelingDot {
+  position: absolute;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--sync-green);
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  box-shadow: 
+    0 0 0 4px rgba(0, 230, 153, 0.2),
+    0 0 16px rgba(0, 230, 153, 0.5),
+    0 0 32px rgba(0, 230, 153, 0.3);
+}
+
+/* ============================================
+   STAGE CARD
+   ============================================ */
+
+.cardContainer {
+  min-height: 180px;
+}
+
+.stageCard {
+  background: var(--void-elevated);
+  border: 1px solid var(--void-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl);
+  position: relative;
+  overflow: hidden;
+}
+
+.stageCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--sync-green);
+}
+
+.versionRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.version {
+  font-family: var(--font-mono);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--sync-green);
+}
+
+.versionLabel {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+  padding-left: var(--space-sm);
+  border-left: 1px solid var(--void-border);
+}
+
+.statusLive,
+.statusInProgress,
+.statusPlanned {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-left: auto;
+}
+
+.statusLive {
+  background: rgba(0, 230, 153, 0.15);
+  color: var(--sync-green);
+  border: 1px solid rgba(0, 230, 153, 0.3);
+}
+
+.statusInProgress {
+  background: rgba(250, 204, 21, 0.15);
+  color: #facc15;
+  border: 1px solid rgba(250, 204, 21, 0.3);
+}
+
+.statusPlanned {
+  background: rgba(148, 163, 184, 0.15);
+  color: #94a3b8;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+.headline {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
+  line-height: 1.2;
+}
+
+.body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* ============================================
+   RIGHT COLUMN - SCHEMATICS
+   ============================================ */
+
+.schematicColumn {
+  width: 50%;
+  padding-right: 5rem;
+  padding-left: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.schematicWrapper {
+  width: 100%;
+  max-width: 420px;
+}
+
+/* ============================================
+   SCHEMATIC FRAME (Generic Container)
+   ============================================ */
+
+.schematicFrame {
+  background: #12121a;
+  border: 1px solid #2a2a3a;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: 
+    0 4px 24px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.03);
+}
+
+.schematicTitle {
+  padding: var(--space-sm) var(--space-md);
+  background: #0a0a10;
+  border-bottom: 1px solid #2a2a3a;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.schematicContent {
+  padding: var(--space-lg);
+}
+
+/* ============================================
+   MERKLE TREE SCHEMATIC
+   ============================================ */
+
+.merkleSvg {
+  width: 100%;
+  height: auto;
+}
+
+.nodeLabel {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  fill: #9ca3af;
+}
+
+.merkleStatus {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  margin-top: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: 1px solid #2a2a3a;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--sync-green);
+}
+
+.statusDot {
+  width: 6px;
+  height: 6px;
+  background: var(--sync-green);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ============================================
+   TERMINAL SCHEMATIC
+   ============================================ */
+
+.terminal {
+  background: #0d0d0d;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  font-family: var(--font-mono);
+}
+
+.terminalHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-sm) var(--space-md);
+  background: #1a1a1a;
+  border-bottom: 1px solid #2a2a3a;
+}
+
+.terminalDots {
+  display: flex;
+  gap: 6px;
+}
+
+.dotRed {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ff5f56;
+}
+
+.dotYellow {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ffbd2e;
+}
+
+.dotGreen {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #27c93f;
+}
+
+.terminalTitle {
+  font-size: var(--text-xs);
+  color: #666;
+}
+
+.terminalBody {
+  padding: var(--space-md);
+  min-height: 200px;
+  font-size: var(--text-sm);
+  line-height: 1.6;
+}
+
+.termCommand {
+  color: #e5e5e5;
+}
+
+.termOutput {
+  color: #888;
+}
+
+.termSuccess {
+  color: var(--sync-green);
+}
+
+.termWarning {
+  color: #facc15;
+}
+
+.cursor {
+  animation: blink 1s step-end infinite;
+  color: var(--sync-green);
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ============================================
+   DIFF SCHEMATIC
+   ============================================ */
+
+.diffContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  min-height: 220px;
+  position: relative;
+}
+
+.diffPanel {
+  background: #0a0a10;
+  border: 1px solid #2a2a3a;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  flex-shrink: 0;
+  width: 140px;
+}
+
+.diffHeader {
+  padding: var(--space-xs) var(--space-sm);
+  background: #1a1a20;
+  border-bottom: 1px solid #2a2a3a;
+}
+
+.diffLabel {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.diffLabelSuccess {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--sync-green);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.diffCode {
+  padding: var(--space-sm);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1.5;
+  margin: 0;
+  white-space: pre;
+}
+
+.diffBrace {
+  color: #888;
+}
+
+.diffKey {
+  color: #7dd3fc;
+}
+
+.diffValue {
+  color: #fde68a;
+}
+
+.diffValueOld {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.15);
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+.diffValueNew {
+  color: var(--sync-green);
+  background: rgba(0, 230, 153, 0.15);
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+.diffArray {
+  color: #c084fc;
+}
+
+.resolverBox {
+  padding: var(--space-sm) var(--space-md);
+  background: #1a1a2e;
+  border: 2px solid #3a3a4a;
+  border-radius: var(--radius-md);
+  flex-shrink: 0;
+}
+
+.resolverCode {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  white-space: nowrap;
+}
+
+.goKeyword {
+  color: #f472b6;
+}
+
+.goFunc {
+  color: #fde68a;
+}
+
+.mergedResult {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 160px;
+  background: #0a0a10;
+  border: 2px solid var(--sync-green);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: 0 0 30px rgba(0, 230, 153, 0.2);
+}
+
+/* ============================================
+   DASHBOARD SCHEMATIC
+   ============================================ */
+
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.statsRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-sm);
+}
+
+.statCard {
+  background: #0a0a10;
+  border: 1px solid #2a2a3a;
+  border-radius: var(--radius-md);
+  padding: var(--space-sm);
+  text-align: center;
+}
+
+.statLabel {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+.statValue {
+  font-family: var(--font-mono);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.statGreen {
+  color: var(--sync-green);
+}
+
+.chartContainer {
+  background: #0a0a10;
+  border: 1px solid #2a2a3a;
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+}
+
+.chartLabel {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-sm);
+}
+
+.chart {
+  width: 100%;
+  height: 80px;
+}
+
+/* ============================================
+   SCROLL HINT
+   ============================================ */
+
+.scrollHint {
+  position: absolute;
+  bottom: var(--space-xl);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  color: var(--text-tertiary);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  z-index: 10;
+}
+
+.scrollHint svg {
+  animation: scrollBounce 2s infinite;
+}
+
+@keyframes scrollBounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(5px); }
+  60% { transform: translateY(2px); }
+}
+
+/* ============================================
+   RESPONSIVE - TABLET
+   ============================================ */
+
+@media (max-width: 1024px) {
+  .stickyContainer {
+    flex-direction: column;
+    padding: var(--space-xl);
+  }
+
+  .narrativeColumn {
+    width: 100%;
+    padding: 0;
+    order: 2;
+  }
+
+  .schematicColumn {
+    width: 100%;
+    padding: 0;
+    order: 1;
+    margin-bottom: var(--space-xl);
+  }
+
+  .schematicWrapper {
+    max-width: 100%;
+  }
+
+  .sectionTitle {
+    font-size: var(--text-3xl);
+  }
+
+  .progressDots {
+    justify-content: center;
+  }
+
+  .narrativeContent {
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .stageCard::before {
+    width: 100%;
+    height: 4px;
+    left: 0;
+    top: 0;
+  }
+}
+
+/* ============================================
+   RESPONSIVE - MOBILE
+   ============================================ */
+
+@media (max-width: 640px) {
+  .section {
+    height: 350vh;
+  }
+
+  .stickyContainer {
+    padding: var(--space-md);
+  }
+
+  .sectionTitle {
+    font-size: var(--text-2xl);
+  }
+
+  .headline {
+    font-size: var(--text-xl);
+  }
+
+  .body {
+    font-size: var(--text-sm);
+  }
+
+  .stageCard {
+    padding: var(--space-lg);
+  }
+
+  .cardContainer {
+    min-height: 160px;
+  }
+
+  .dot::after {
+    width: 20px;
+  }
+
+  .diffPanel {
+    width: 110px;
+  }
+
+  .diffCode {
+    font-size: 8px;
+  }
+
+  .statsRow {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-xs);
+  }
+
+  .statCard {
+    padding: var(--space-xs);
+  }
+
+  .statValue {
+    font-size: var(--text-base);
+  }
+}
