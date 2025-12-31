@@ -115,7 +115,7 @@ export default function CodeExample() {
           animate={isInView ? "visible" : "hidden"}
         >
           <motion.a
-            href="#"
+            href="/docs"
             className={styles.btnPrimary}
             variants={itemVariants}
           >
@@ -129,13 +129,6 @@ export default function CodeExample() {
                 strokeLinejoin="round"
               />
             </svg>
-          </motion.a>
-          <motion.a
-            href="#"
-            className={styles.btnSecondary}
-            variants={itemVariants}
-          >
-            View Examples
           </motion.a>
         </motion.div>
       </div>

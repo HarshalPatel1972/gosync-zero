@@ -5,6 +5,7 @@ import SolutionSection from "@/components/SolutionSection";
 import InteractiveDemo from "@/components/InteractiveDemo";
 import FeaturesGrid from "@/components/FeaturesGrid";
 import CodeExample from "@/components/CodeExample";
+import Blueprints from "@/components/Blueprints";
 import Roadmap from "@/components/Roadmap";
 import Footer from "@/components/Footer";
 
@@ -19,6 +20,7 @@ export default function Home() {
         <InteractiveDemo />
         <FeaturesGrid />
         <CodeExample />
+        <Blueprints />
         <Roadmap />
       </main>
       <Footer />
