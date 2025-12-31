@@ -104,8 +104,8 @@ GoSync.subscribe('todos', (data) => {
 
 ```bash
 # Clone the repository
-git clone https://github.com/HarshalPatel1972/gosync-zero.git
-cd gosync-zero
+git clone https://github.com/HarshalPatel1972/GoSync.git
+cd GoSync
 
 # Install dependencies
 npm install

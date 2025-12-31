@@ -22,7 +22,7 @@ export default function Navigation() {
     { href: "#demo", label: "Demo" },
     { href: "/docs", label: "Docs" },
     { href: "#roadmap", label: "Roadmap" },
-    { href: "https://github.com/HarshalPatel1972/gosync-zero", label: "GitHub", external: true },
+    { href: "https://github.com/HarshalPatel1972/GoSync", label: "GitHub", external: true },
   ];
 
   return (

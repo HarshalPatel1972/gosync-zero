@@ -29,7 +29,7 @@ export default function ExampleShowcase() {
       },
       secondaryButton: {
         label: "View Source",
-        href: "https://github.com/HarshalPatel1972/gosync-zero",
+        href: "https://github.com/HarshalPatel1972/GoSync",
         icon: Github,
         external: true,
       },

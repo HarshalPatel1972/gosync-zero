@@ -41,11 +41,11 @@ This project and everyone participating in it is governed by our commitment to p
 # 1. Fork the repository on GitHub
 
 # 2. Clone your fork
-git clone https://github.com/YOUR_USERNAME/gosync-zero.git
-cd gosync-zero
+git clone https://github.com/YOUR_USERNAME/GoSync.git
+cd GoSync
 
 # 3. Add upstream remote
-git remote add upstream https://github.com/HarshalPatel1972/gosync-zero.git
+git remote add upstream https://github.com/HarshalPatel1972/GoSync.git
 
 # 4. Install dependencies
 npm install
@@ -102,7 +102,7 @@ Ready to code? Here's how:
 ### Project Structure
 
 ```
-gosync-zero/
+GoSync/
 ├── app/                    # Next.js App Router pages
 │   ├── docs/              # Documentation pages
 │   └── page.js            # Landing page

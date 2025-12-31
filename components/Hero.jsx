@@ -100,7 +100,7 @@ export default function Hero() {
             </svg>
           </a>
           <a
-            href="https://github.com/HarshalPatel1972/gosync-zero"
+            href="https://github.com/HarshalPatel1972/GoSync"
             target="_blank"
             rel="noopener noreferrer"
             className={styles.ctaSecondary}
