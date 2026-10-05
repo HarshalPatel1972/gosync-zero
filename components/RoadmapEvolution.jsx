@@ -192,21 +192,23 @@ function MerkleTreeSchematic() {
 // ============================================
 // STAGE 1: TERMINAL CLI SCHEMATIC
 // ============================================
+// Lines typed by the CLI inspector animation.
+const TERMINAL_SEQUENCE = [
+  { type: "command", text: "$ gosync inspect --watch" },
+  { type: "output", text: "[INFO]  Starting inspector on port 9090..." },
+  { type: "success", text: "[SYNC]  2 items received from server" },
+  { type: "output", text: "[PULL]  cursor 1759683000123 -> 3 changes" },
+  { type: "success", text: "[PUSH]  2 mutations acknowledged" },
+  { type: "warning", text: "[QUEUE] 1 item pending retry" },
+  { type: "success", text: "[SYNC]  Retry successful" },
+  { type: "output", text: "[QUEUE] 0 pending | 847 synced" },
+];
+
 function TerminalSchematic() {
   const [lines, setLines] = useState([]);
   const [currentLine, setCurrentLine] = useState("");
   const [isTyping, setIsTyping] = useState(true);
-
-  const terminalSequence = [
-    { type: "command", text: "$ gosync inspect --watch" },
-    { type: "output", text: "[INFO]  Starting inspector on port 9090..." },
-    { type: "success", text: "[SYNC]  2 items received from server" },
-    { type: "output", text: "[PULL]  cursor 1759683000123 -> 3 changes" },
-    { type: "success", text: "[PUSH]  2 mutations acknowledged" },
-    { type: "warning", text: "[QUEUE] 1 item pending retry" },
-    { type: "success", text: "[SYNC]  Retry successful" },
-    { type: "output", text: "[QUEUE] 0 pending | 847 synced" },
-  ];
+
 
   useEffect(() => {
     let lineIndex = 0;
@@ -214,7 +216,7 @@ function TerminalSchematic() {
     let timer;
 
     const typeNextChar = () => {
-      if (lineIndex >= terminalSequence.length) {
+      if (lineIndex >= TERMINAL_SEQUENCE.length) {
         // Restart after delay
         setTimeout(() => {
           setLines([]);
@@ -226,18 +228,18 @@ function TerminalSchematic() {
         return;
       }
 
-      const currentText = terminalSequence[lineIndex].text;
+      const currentText = TERMINAL_SEQUENCE[lineIndex].text;
       
       if (charIndex < currentText.length) {
         setCurrentLine(currentText.slice(0, charIndex + 1));
         charIndex++;
-        timer = setTimeout(typeNextChar, terminalSequence[lineIndex].type === "command" ? 50 : 20);
+        timer = setTimeout(typeNextChar, TERMINAL_SEQUENCE[lineIndex].type === "command" ? 50 : 20);
       } else {
-        setLines((prev) => [...prev, terminalSequence[lineIndex]]);
+        setLines((prev) => [...prev, TERMINAL_SEQUENCE[lineIndex]]);
         setCurrentLine("");
         lineIndex++;
         charIndex = 0;
-        timer = setTimeout(typeNextChar, terminalSequence[lineIndex - 1].type === "command" ? 800 : 400);
+        timer = setTimeout(typeNextChar, TERMINAL_SEQUENCE[lineIndex - 1].type === "command" ? 800 : 400);
       }
     };
 
@@ -316,8 +318,8 @@ function DiffSchematic() {
           </div>
           <pre className={styles.diffCode}>
             <span className={styles.diffBrace}>{"{"}</span>{"\n"}
-            {"  "}<span className={styles.diffKey}>"status"</span>: <span className={styles.diffValueOld}>"draft"</span>,{"\n"}
-            {"  "}<span className={styles.diffKey}>"editedAt"</span>: <span className={styles.diffValue}>"10:42"</span>{"\n"}
+            {"  "}<span className={styles.diffKey}>&quot;status&quot;</span>: <span className={styles.diffValueOld}>&quot;draft&quot;</span>,{"\n"}
+            {"  "}<span className={styles.diffKey}>&quot;editedAt&quot;</span>: <span className={styles.diffValue}>&quot;10:42&quot;</span>{"\n"}
             <span className={styles.diffBrace}>{"}"}</span>
           </pre>
         </motion.div>
@@ -349,8 +351,8 @@ function DiffSchematic() {
           </div>
           <pre className={styles.diffCode}>
             <span className={styles.diffBrace}>{"{"}</span>{"\n"}
-            {"  "}<span className={styles.diffKey}>"status"</span>: <span className={styles.diffValueNew}>"published"</span>,{"\n"}
-            {"  "}<span className={styles.diffKey}>"editedAt"</span>: <span className={styles.diffValue}>"10:45"</span>{"\n"}
+            {"  "}<span className={styles.diffKey}>&quot;status&quot;</span>: <span className={styles.diffValueNew}>&quot;published&quot;</span>,{"\n"}
+            {"  "}<span className={styles.diffKey}>&quot;editedAt&quot;</span>: <span className={styles.diffValue}>&quot;10:45&quot;</span>{"\n"}
             <span className={styles.diffBrace}>{"}"}</span>
           </pre>
         </motion.div>
@@ -370,9 +372,9 @@ function DiffSchematic() {
               </div>
               <pre className={styles.diffCode}>
                 <span className={styles.diffBrace}>{"{"}</span>{"\n"}
-                {"  "}<span className={styles.diffKey}>"status"</span>: <span className={styles.diffValueNew}>"published"</span>,{"\n"}
-                {"  "}<span className={styles.diffKey}>"editedAt"</span>: <span className={styles.diffValue}>"10:45"</span>,{"\n"}
-                {"  "}<span className={styles.diffKey}>"history"</span>: <span className={styles.diffArray}>["draft"]</span>{"\n"}
+                {"  "}<span className={styles.diffKey}>&quot;status&quot;</span>: <span className={styles.diffValueNew}>&quot;published&quot;</span>,{"\n"}
+                {"  "}<span className={styles.diffKey}>&quot;editedAt&quot;</span>: <span className={styles.diffValue}>&quot;10:45&quot;</span>,{"\n"}
+                {"  "}<span className={styles.diffKey}>&quot;history&quot;</span>: <span className={styles.diffArray}>[&quot;draft&quot;]</span>{"\n"}
                 <span className={styles.diffBrace}>{"}"}</span>
               </pre>
             </motion.div>

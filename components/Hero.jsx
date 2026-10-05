@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 import ParticleField from "./ParticleField";
 import styles from "./Hero.module.css";
@@ -87,7 +88,7 @@ export default function Hero() {
 
         {/* CTA Buttons */}
         <motion.div className={styles.ctas} variants={itemVariants}>
-          <a href="/docs" className={styles.ctaPrimary}>
+          <Link href="/docs" className={styles.ctaPrimary}>
             Get Started
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
               <path
@@ -98,7 +99,7 @@ export default function Hero() {
                 strokeLinejoin="round"
               />
             </svg>
-          </a>
+          </Link>
           <a
             href="https://github.com/HarshalPatel1972/GoSync"
             target="_blank"

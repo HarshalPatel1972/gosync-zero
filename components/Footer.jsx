@@ -66,9 +66,9 @@ export default function Footer() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
-            <a href="/docs" className={styles.btnPrimary}>
+            <Link href="/docs" className={styles.btnPrimary}>
               Get Started
-            </a>
+            </Link>
             <a 
               href="https://github.com/HarshalPatel1972/GoSync" 
               target="_blank"

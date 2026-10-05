@@ -2,8 +2,22 @@ import ExampleShowcase from "@/components/examples/ExampleShowcase";
 import styles from "./page.module.css";
 
 export const metadata = {
-  title: "Examples | GoSync",
-  description: "Real-world patterns demonstrating offline-first architecture, conflict resolution, and WebSocket performance.",
+  title: "Examples",
+  description: "Example apps built with GoSync: offline-first tasks, real-time messaging and notes.",
+  alternates: { canonical: "/examples" },
+  openGraph: {
+    title: "Examples | GoSync",
+    description: "Example apps built with GoSync: offline-first tasks, real-time messaging and notes.",
+    url: "/examples",
+    siteName: "GoSync",
+    images: ["/og-image.jpg"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Examples | GoSync",
+    description: "Example apps built with GoSync: offline-first tasks, real-time messaging and notes.",
+    images: ["/og-image.jpg"],
+  },
 };
 
 export default function ExamplesPage() {

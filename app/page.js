@@ -9,6 +9,10 @@ import Blueprints from "@/components/Blueprints";
 import RoadmapEvolution from "@/components/RoadmapEvolution";
 import Footer from "@/components/Footer";
 
+export const metadata = {
+  alternates: { canonical: "/" },
+};
+
 export default function Home() {
   return (
     <>
