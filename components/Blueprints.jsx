@@ -30,19 +30,19 @@ export default function Blueprints() {
       pain: "Internet goes down during the morning rush. The POS stops. Revenue stops.",
       fixes: [
         { label: "Business as Usual", desc: "The POS continues to accept orders and modify inventory locally." },
-        { label: "Safe Inventory", desc: "Each field merges independently, so two tills editing one product don't overwrite each other's changes." },
-        { label: "Batch Sync", desc: "When online, queued orders upload in large batches, each one acknowledged exactly once." },
+        { label: "Safe Edits", desc: "Each field merges independently: one till changes a price while another fixes a description, and both survive. Record each sale as its own entry rather than editing a shared stock count." },
+        { label: "Batch Sync", desc: "When online, queued orders upload in batches. Each is applied exactly once, even if an upload is retried." },
       ],
     },
     {
       id: "saas",
       title: "Collaborative SaaS",
-      subtitle: "Kanban Boards, Note Taking, CRMs",
+      subtitle: "Kanban Boards, Task Trackers, CRMs",
       Icon: Users,
       pain: "Two users edit the same ticket. \"Last write wins\" overwrites everything.",
       fixes: [
         { label: "Shared Logic", desc: "Every client and the server apply the exact same deterministic merge rules." },
-        { label: "Delta Updates", desc: "GoSync detects individual field changes and merges them intelligently." },
+        { label: "Field-Level Updates", desc: "Only the fields you change are sent, and each one merges on its own." },
       ],
     },
   ];

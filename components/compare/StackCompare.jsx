@@ -26,7 +26,7 @@ const OPTIONS = [
     tagline: "Google's managed database",
     managed: ["Runs on Google Cloud. Can't be self-hosted."],
     offline: { level: "yes", text: "Built in (Firestore offline persistence)" },
-    cost: "Free tier, then billed per document read and write.",
+    cost: "Free tier, then billed per document read, write and delete, plus storage.",
     when: "You want nothing to operate and Google Cloud is acceptable.",
     sources: [
       { label: "Firebase pricing", href: "https://firebase.google.com/pricing" },
@@ -91,6 +91,7 @@ const WEAKER = [
   "Each user syncs their whole dataset, or chosen collections. There are no per-record queries yet.",
   "The browser engine is Go compiled to WebAssembly: about 0.8 MB compressed. It loads once and is then cached.",
   "Web apps only. There are no native iOS or Android SDKs; it works on phones as a web app or PWA.",
+  "Offline data lives in browser storage, which browsers can clear (for example Safari after 7 days without a visit, unless the app is added to the home screen).",
 ];
 
 const OFFLINE_LABEL = { yes: "Offline writes", no: "No offline writes", diy: "Offline writes: DIY" };
