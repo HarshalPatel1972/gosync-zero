@@ -1,0 +1,361 @@
+.section {
+  padding: var(--space-section) clamp(16px, 4vw, 56px);
+  background:
+    radial-gradient(50% 50% at 80% 30%, rgba(0, 230, 153, 0.05), transparent 70%),
+    var(--void-surface);
+  border-top: 1px solid var(--void-border);
+}
+
+.container {
+  max-width: 1320px;
+  margin: 0 auto;
+}
+
+.head {
+  max-width: 760px;
+  margin-bottom: clamp(32px, 5vw, 56px);
+}
+
+.kicker {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sync-green);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 3.8vw, 3rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+  margin: 12px 0 14px;
+}
+
+.title em {
+  font-style: normal;
+  color: var(--text-secondary);
+}
+
+.lede {
+  color: var(--text-secondary);
+  font-size: var(--text-lg);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: minmax(300px, 420px) minmax(0, 1fr);
+  gap: clamp(24px, 4vw, 56px);
+  align-items: start;
+}
+
+/* Questions as hardware-like switches */
+
+.questions {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.questions li {
+  transition: opacity var(--duration-normal);
+}
+
+.irrelevant {
+  opacity: 0.4;
+}
+
+.switchRow {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+  text-align: left;
+  padding: 16px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--void-border);
+  background: var(--void-elevated);
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  transition: border-color var(--duration-fast), background var(--duration-fast);
+}
+
+.switchRow:hover {
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.switchRow:focus-visible {
+  outline: 2px solid var(--sync-green);
+  outline-offset: 2px;
+}
+
+.qNum {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  align-self: start;
+  padding-top: 2px;
+}
+
+.qText {
+  display: grid;
+  gap: 4px;
+}
+
+.qLabel {
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.qHint {
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+  line-height: 1.4;
+}
+
+.toggle {
+  position: relative;
+  width: 66px;
+  height: 30px;
+  border-radius: var(--radius-full);
+  background: #1c1c26;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  transition: background var(--duration-normal);
+}
+
+.toggleOn {
+  background: var(--sync-green-dim);
+  box-shadow: inset 0 0 0 1px rgba(0, 230, 153, 0.5);
+}
+
+.toggleText {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 11px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+
+.toggleOn .toggleText {
+  right: auto;
+  left: 11px;
+  color: var(--sync-green);
+}
+
+.knob {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #f4f4f5, #a1a1aa);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  transition: transform 300ms var(--ease-out);
+}
+
+.toggleOn .knob {
+  transform: translateX(36px);
+  background: linear-gradient(180deg, #9cffd8, var(--sync-green));
+}
+
+/* The routing diagram */
+
+.diagramWrap {
+  display: grid;
+  gap: 20px;
+}
+
+.diagram {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.edge path {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.1);
+  stroke-width: 2;
+}
+
+.edgeLit path {
+  fill: none;
+  stroke: var(--sync-green);
+  stroke-width: 3;
+  filter: drop-shadow(0 0 6px rgba(0, 230, 153, 0.5));
+}
+
+.edgeLit path.flow {
+  stroke: #d8fff0;
+  stroke-width: 3;
+  stroke-dasharray: 2 26;
+  stroke-linecap: round;
+  filter: none;
+  animation: flow 1.2s linear infinite;
+}
+
+@keyframes flow {
+  to { stroke-dashoffset: -28; }
+}
+
+.edgeLabel {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  fill: var(--text-tertiary);
+}
+
+.edgeLit .edgeLabel {
+  fill: var(--sync-green);
+}
+
+.node circle {
+  fill: var(--void-elevated);
+  stroke: rgba(255, 255, 255, 0.15);
+  stroke-width: 2;
+  transition: stroke var(--duration-normal);
+}
+
+.nodeLit circle {
+  stroke: var(--sync-green);
+}
+
+.node text {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  fill: var(--text-tertiary);
+}
+
+.nodeLit text {
+  fill: var(--text-primary);
+}
+
+.startLabel {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  fill: var(--text-tertiary);
+}
+
+.leaf circle {
+  fill: rgba(255, 255, 255, 0.12);
+  transition: r var(--duration-normal);
+}
+
+.leaf text {
+  font-family: var(--font-display);
+  font-size: 19px;
+  fill: var(--text-tertiary);
+  transition: fill var(--duration-normal);
+}
+
+.leafOurs text {
+  fill: rgba(0, 230, 153, 0.55);
+}
+
+.leafLit circle {
+  fill: var(--sync-green);
+  filter: drop-shadow(0 0 8px var(--sync-green));
+}
+
+.leafLit text {
+  fill: var(--text-primary);
+  font-weight: 600;
+}
+
+/* Result */
+
+.result {
+  padding: 22px 24px;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--void-border);
+  background: var(--gradient-glass);
+  animation: resultIn 400ms var(--ease-out);
+}
+
+.resultOurs {
+  border-color: rgba(0, 230, 153, 0.45);
+  box-shadow: 0 0 40px rgba(0, 230, 153, 0.1);
+}
+
+.resultKicker {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.resultOurs .resultKicker {
+  color: var(--sync-green);
+}
+
+.result h3 {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin: 6px 0 8px;
+}
+
+.result p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0 0 14px;
+  max-width: 62ch;
+}
+
+.resultLink {
+  color: var(--sync-green);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.resultLink:hover {
+  text-decoration: underline;
+}
+
+@keyframes resultIn {
+  from { opacity: 0.4; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (max-width: 960px) {
+  .board {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  /* The diagram's labels become unreadably small on phones: keep the result. */
+  .diagram {
+    display: none;
+  }
+
+  .switchRow {
+    padding: 14px 12px;
+    gap: 10px;
+  }
+
+  .qHint {
+    font-size: 12.5px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .edgeLit path.flow {
+    animation: none;
+  }
+
+  .knob,
+  .result {
+    transition: none;
+    animation: none;
+  }
+}

@@ -1,0 +1,280 @@
+.section {
+  padding: var(--space-section) clamp(16px, 4vw, 56px);
+  background: var(--void-black);
+  border-top: 1px solid var(--void-border);
+}
+
+.container {
+  max-width: 1320px;
+  margin: 0 auto;
+}
+
+.head {
+  max-width: 780px;
+  margin-bottom: clamp(32px, 5vw, 56px);
+}
+
+.kicker {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sync-green);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 3.8vw, 3rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+  margin: 12px 0 14px;
+}
+
+.title em {
+  font-style: normal;
+  text-decoration: underline;
+  text-decoration-color: var(--client-magenta);
+  text-decoration-thickness: 4px;
+  text-underline-offset: 6px;
+}
+
+.lede {
+  color: var(--text-secondary);
+  font-size: var(--text-lg);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 22px;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--void-border);
+  background: var(--void-surface);
+}
+
+.cardOurs {
+  border-color: rgba(0, 230, 153, 0.45);
+  background:
+    radial-gradient(80% 60% at 0% 0%, rgba(0, 230, 153, 0.08), transparent 70%),
+    var(--void-surface);
+}
+
+.cardHead h3 {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 600;
+  margin: 0 0 2px;
+}
+
+.cardOurs .cardHead h3 {
+  color: var(--sync-green);
+}
+
+.cardHead span {
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+}
+
+.stackLabel {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: -8px;
+}
+
+/* The stack: things you operate are outlined slabs; managed is a solid block */
+
+.stack {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+  min-height: 176px;
+  align-content: start;
+}
+
+.stack li {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.35;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+}
+
+.slabYours {
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background:
+    repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.025) 0 6px, transparent 6px 12px),
+    var(--void-elevated);
+  color: var(--text-primary);
+  /* each additional thing to run steps right a little, like a growing pile */
+  margin-left: calc(var(--i) * 6px);
+}
+
+.cardOurs .slabYours {
+  border-color: rgba(0, 230, 153, 0.5);
+}
+
+.slabManaged {
+  border: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-secondary);
+}
+
+.offline {
+  display: grid;
+  gap: 2px;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+}
+
+.offline strong {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.offline span {
+  color: var(--text-secondary);
+}
+
+.offline_yes {
+  background: var(--sync-green-dim);
+}
+
+.offline_yes strong {
+  color: var(--sync-green);
+}
+
+.offline_no {
+  background: var(--client-magenta-dim);
+}
+
+.offline_no strong {
+  color: var(--client-magenta);
+}
+
+.offline_diy {
+  background: rgba(250, 204, 21, 0.1);
+}
+
+.offline_diy strong {
+  color: #facc15;
+}
+
+.facts {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+
+.facts dt {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-top: 6px;
+}
+
+.facts dd {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.sources {
+  margin-top: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--void-border);
+}
+
+.sources a {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  text-decoration: none;
+}
+
+.sources a:hover {
+  color: var(--text-primary);
+}
+
+/* Honesty box */
+
+.weaker {
+  margin-top: 24px;
+  padding: 24px 28px;
+  border-radius: var(--radius-xl);
+  border: 1px dashed rgba(255, 255, 255, 0.18);
+}
+
+.weaker h3 {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 12px;
+}
+
+.weaker ul {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 32px;
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+}
+
+.verified {
+  margin: 18px 0 0;
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+.verified a {
+  color: var(--text-secondary);
+}
+
+@media (max-width: 1080px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stack {
+    min-height: 0;
+  }
+
+  .weaker {
+    padding: 20px;
+  }
+
+  .weaker ul {
+    grid-template-columns: 1fr;
+  }
+}

@@ -19,10 +19,10 @@ export default function Navigation() {
   }, []);
 
   const navLinks = [
-    { href: "#features", label: "Features" },
-    { href: "#demo", label: "Demo" },
+    { href: "#story", label: "Story" },
+    { href: "#fit", label: "Is it for you?" },
+    { href: "#compare", label: "Compare" },
     { href: "/docs", label: "Docs" },
-    { href: "#roadmap", label: "Roadmap" },
     { href: "https://github.com/HarshalPatel1972/GoSync", label: "GitHub", external: true },
   ];
 
@@ -93,7 +93,7 @@ export default function Navigation() {
           </div>
 
           {/* CTA Button */}
-          <a href="#roadmap" className={styles.ctaButton}>
+          <Link href="/docs/quick-start" className={styles.ctaButton}>
             Get Started
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path
@@ -104,7 +104,7 @@ export default function Navigation() {
                 strokeLinejoin="round"
               />
             </svg>
-          </a>
+          </Link>
 
           {/* Mobile Menu Button */}
           <button
@@ -147,13 +147,13 @@ export default function Navigation() {
                 {link.label}
               </motion.a>
             ))}
-            <a
-              href="#roadmap"
+            <Link
+              href="/docs/quick-start"
               className={`${styles.ctaButton} ${styles.mobileCta}`}
               onClick={() => setMobileMenuOpen(false)}
             >
               Get Started
-            </a>
+            </Link>
           </motion.div>
         )}
       </AnimatePresence>
