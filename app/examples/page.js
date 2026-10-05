@@ -22,7 +22,7 @@ export const metadata = {
 
 export default function ExamplesPage() {
   return (
-    <main className={styles.main}>
+    <main id="main" className={styles.main}>
       {/* Hero Section */}
       <section className={styles.hero}>
         <div className={styles.heroContent}>

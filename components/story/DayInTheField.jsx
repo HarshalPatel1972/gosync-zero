@@ -78,7 +78,7 @@ function VisitRow({ v, t }) {
   );
 }
 
-// Sunita Devi's record as each side sees it during the concurrent edit.
+// The shared household record as each side sees it during the concurrent edit.
 function ConflictCard({ s, side }) {
   const phoneNew = side === "server" ? s.supervisorEdited : s.merged;
   const doseRecorded = side === "phone" ? s.workerEdited : s.merged;
@@ -91,13 +91,13 @@ function ConflictCard({ s, side }) {
       <dl>
         <dt>Phone</dt>
         <dd className={phoneNew ? styles.fieldServer : undefined}>
-          {phoneNew ? "98•••• 4410" : "98•••• 1023"}
+          {phoneNew ? "+•• ••• 4410" : "+•• ••• 1023"}
           {phoneNew && <small>supervisor</small>}
         </dd>
         <dt>TT-2 dose</dt>
         <dd className={doseRecorded ? styles.fieldWorker : undefined}>
           {doseRecorded ? "Given 13:20" : "Not recorded"}
-          {doseRecorded && <small>Kamla</small>}
+          {doseRecorded && <small>Amara</small>}
         </dd>
       </dl>
     </div>
@@ -162,7 +162,7 @@ function Server({ s, t }) {
       <div className={styles.serverHead}>
         <span className={styles.serverIcon} aria-hidden="true" />
         <div>
-          <strong>District office</strong>
+          <strong>Regional office</strong>
           <span>gosync-server · the office PC</span>
         </div>
       </div>

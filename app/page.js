@@ -6,7 +6,7 @@ import StackCompare from "@/components/compare/StackCompare";
 import FeaturesGrid from "@/components/FeaturesGrid";
 import CodeExample from "@/components/CodeExample";
 import Blueprints from "@/components/Blueprints";
-import RoadmapEvolution from "@/components/RoadmapEvolution";
+import Roadmap from "@/components/roadmap/Roadmap";
 import Footer from "@/components/Footer";
 
 export const metadata = {
@@ -17,7 +17,7 @@ export default function Home() {
   return (
     <>
       <Navigation />
-      <main>
+      <main id="main">
         <Hero />
         <DayInTheField />
         <Switchboard />
@@ -25,7 +25,7 @@ export default function Home() {
         <CodeExample />
         <FeaturesGrid />
         <Blueprints />
-        <RoadmapEvolution />
+        <Roadmap />
       </main>
       <Footer />
     </>

@@ -118,7 +118,7 @@ export default function CodeExample() {
         >
           <motion.a
             href="/docs"
-            className={styles.btnPrimary}
+            className={`${styles.btnPrimary} gs-btn gs-btn-primary`}
             variants={itemVariants}
           >
             Read the Docs

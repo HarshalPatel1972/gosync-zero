@@ -10,7 +10,7 @@ export default function DocsLayout({ children }) {
   return (
     <div className={styles.docsWrapper}>
       <DocsSidebar />
-      <main className={styles.docsMain}>
+      <main id="main" className={styles.docsMain}>
         {children}
       </main>
     </div>

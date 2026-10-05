@@ -44,8 +44,8 @@
   transition: transform var(--duration-normal) var(--ease-out);
 }
 
-.logo:hover .logoIcon {
-  transform: rotate(10deg);
+.logoIcon {
+  flex-shrink: 0;
 }
 
 .logoText {
@@ -106,10 +106,6 @@
   transition: all var(--duration-normal) var(--ease-out);
 }
 
-.ctaButton:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-glow-cyan);
-}
 
 /* Mobile Menu Button */
 .menuButton {

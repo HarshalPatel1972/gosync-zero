@@ -1,13 +1,26 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import styles from "./Navigation.module.css";
+import LogoMark from "./LogoMark";
 
 export default function Navigation() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+
+  // On the homepage the logo returns to the top; elsewhere it navigates home.
+  const onLogoClick = (e) => {
+    if (pathname !== "/") return;
+    e.preventDefault();
+    setMobileMenuOpen(false);
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+    if (window.location.hash) history.replaceState(null, "", "/");
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -36,42 +49,8 @@ export default function Navigation() {
       >
         <div className={styles.container}>
           {/* Logo */}
-          <Link href="/" className={styles.logo}>
-            <svg
-              className={styles.logoIcon}
-              width="32"
-              height="32"
-              viewBox="0 0 32 32"
-              fill="none"
-            >
-              <circle cx="16" cy="8" r="4" fill="currentColor" />
-              <circle cx="8" cy="22" r="4" fill="currentColor" />
-              <circle cx="24" cy="22" r="4" fill="currentColor" />
-              <line
-                x1="16"
-                y1="12"
-                x2="10"
-                y2="18"
-                stroke="currentColor"
-                strokeWidth="2"
-              />
-              <line
-                x1="16"
-                y1="12"
-                x2="22"
-                y2="18"
-                stroke="currentColor"
-                strokeWidth="2"
-              />
-              <line
-                x1="12"
-                y1="22"
-                x2="20"
-                y2="22"
-                stroke="currentColor"
-                strokeWidth="2"
-              />
-            </svg>
+          <Link href="/" className={styles.logo} onClick={onLogoClick} aria-label="GoSync home">
+            <LogoMark className={styles.logoIcon} />
             <span className={styles.logoText}>GoSync</span>
           </Link>
 
@@ -93,7 +72,7 @@ export default function Navigation() {
           </div>
 
           {/* CTA Button */}
-          <Link href="/docs/quick-start" className={styles.ctaButton}>
+          <Link href="/docs/quick-start" className={`${styles.ctaButton} gs-btn gs-btn-primary`}>
             Get Started
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path
@@ -149,7 +128,7 @@ export default function Navigation() {
             ))}
             <Link
               href="/docs/quick-start"
-              className={`${styles.ctaButton} ${styles.mobileCta}`}
+              className={`${styles.ctaButton} ${styles.mobileCta} gs-btn gs-btn-primary`}
               onClick={() => setMobileMenuOpen(false)}
             >
               Get Started
