@@ -25,7 +25,7 @@ const SIGNAL = [
   { from: at(8, 30), to: at(11, 38), bars: 0 },
   { from: at(11, 38), to: at(11, 44), bars: 1 }, // bus stop
   { from: at(11, 44), to: at(14, 40), bars: 0 },
-  { from: at(14, 40), to: at(14, 50), bars: 2 }, // hill above Kheda
+  { from: at(14, 40), to: at(14, 50), bars: 2 }, // a ridge above the river village
   { from: at(14, 50), to: at(18, 20), bars: 0 },
   { from: at(18, 20), to: at(18, 30), bars: 2 },
   { from: at(18, 30), to: at(19, 30), bars: 4 },
@@ -48,19 +48,20 @@ export function nextConnection(t) {
 
 export const PLACES = [
   { at: at(7, 0), name: "Town" },
-  { at: at(9, 0), name: "Rampur" },
+  { at: at(9, 0), name: "Hillside" },
   { at: at(11, 38), name: "Bus stop" },
-  { at: at(12, 30), name: "Kheda", row: 1 },
+  { at: at(12, 30), name: "River village", row: 1 },
   { at: at(18, 20), name: "Town" },
 ];
 
 // 23 household visits. Each is saved on the phone at `at` and reaches the
 // server at the next moment with signal.
+// Households from many places: the story is meant for field teams anywhere.
 const NAMES = [
-  "Meena Kumari", "Rekha Yadav", "Geeta Bai", "Asha Verma", "Kamini Patel", "Lata Devi",
-  "Pushpa Rani", "Savitri Bai", "Radha Singh", "Usha Meena", "Sunita Devi", "Kiran Gupta",
-  "Anita Joshi", "Shanti Bai", "Laxmi Rawat", "Nirmala Devi", "Poonam Sahu", "Sarita Bai",
-  "Mamta Rao", "Babita Jain", "Sushila Devi", "Kamla Bai", "Rukmini Das",
+  "Maria Santos", "Aisha Bello", "Nguyen Thi Lan", "Fatima Zahra", "Grace Mwangi", "Priya Nair",
+  "Sofia Rossi", "Amina Yusuf", "Elena Petrova", "Chen Wei", "Ana Lima", "Leila Haddad",
+  "Mei Tanaka", "Zainab Okafor", "Lucía Gómez", "Hana Kim", "Esther Mensah", "Inês Duarte",
+  "Sara Cohen", "Nadia Rahman", "Olga Ivanova", "Rosa Delgado", "Yuki Sato",
 ];
 const VISIT_TIMES = [
   at(9, 20), at(9, 35), at(9, 55), at(10, 10), at(10, 25), at(10, 40), at(10, 55), at(11, 15),
@@ -75,12 +76,12 @@ export const VISITS = VISIT_TIMES.map((time, i) => ({
   syncedAt: nextConnection(time),
 }));
 
-// The concurrent edit: house of Sunita Devi (visit 11).
+// The concurrent edit: the house of visit 11.
 export const CONFLICT = {
-  name: "Sunita Devi",
+  name: VISITS[10].name,
   house: VISITS[10].house,
   supervisorEditAt: at(13, 5), // office corrects the phone number
-  workerEditAt: at(13, 20), // offline in Kheda: records TT-2 vaccine
+  workerEditAt: at(13, 20), // offline in the river village: records the TT-2 dose
   mergedAt: nextConnection(at(13, 20)),
 };
 
@@ -92,24 +93,24 @@ export const BEATS = [
   {
     at: at(7, 40),
     title: "07:40 · Leaving town",
-    body: "Kamla is a community health worker. Today: 23 household visits across two villages, most of them with no signal at all. Her app loads once, here, on town 4G.",
+    body: "Amara is a community health worker. Today: 23 household visits across two villages, most of them with no signal at all. Her app loads once, here, on town 4G.",
   },
   {
     at: at(9, 15),
-    title: "Rampur · no signal",
+    title: "Hillside · no signal",
     body: "Each visit saves instantly on the phone. No spinner, no retry button. Visits waiting to be sent sit in an outbox on the device.",
     usually: "Forms that refuse to submit, or entries lost when the page reloads.",
   },
   {
     at: at(11, 38),
     title: "Bus stop · 2G for six minutes",
-    body: "Enough. Only the 8 new visits travel, a few kilobytes, and the district office sees them before the bus leaves.",
+    body: "Enough. Only the 8 new visits travel, a few kilobytes, and the regional office sees them before the bus leaves.",
     usually: "A full re-upload that times out, or duplicates when the retry fires twice.",
   },
   {
     at: at(13, 5),
     title: "Same house, two people",
-    body: "At the office, the supervisor corrects Sunita Devi's phone number. In Kheda, offline, Kamla records her second tetanus dose. Neither knows about the other.",
+    body: `At the office, the supervisor corrects ${VISITS[10].name}'s phone number. In the river village, offline, Amara records her second tetanus dose. Neither knows about the other.`,
   },
   {
     at: at(14, 40),
@@ -126,7 +127,7 @@ export const BEATS = [
   {
     at: at(18, 30),
     title: "Back in town",
-    body: "Everything sends on its own. 23 visits, none lost, none duplicated. The server is one small program on the district office's own machine.",
+    body: "Everything sends on its own. 23 visits, none lost, none duplicated. The server is one small program on the regional office's own machine.",
   },
 ];
 

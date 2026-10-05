@@ -159,13 +159,8 @@
   padding: 14px 28px;
   border-radius: var(--radius-lg);
   text-decoration: none;
-  transition: all var(--duration-normal) var(--ease-out);
 }
 
-.btnPrimary:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-glow-cyan);
-}
 
 .btnSecondary {
   display: inline-flex;
@@ -179,7 +174,6 @@
   padding: 14px 28px;
   border-radius: var(--radius-lg);
   text-decoration: none;
-  transition: all var(--duration-normal) var(--ease-out);
 }
 
 .btnSecondary:hover {

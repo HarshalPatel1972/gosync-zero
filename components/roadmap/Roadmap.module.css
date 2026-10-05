@@ -1,0 +1,343 @@
+.section {
+  padding: var(--space-section) clamp(16px, 4vw, 56px);
+  background:
+    radial-gradient(40% 50% at 15% 20%, rgba(0, 230, 153, 0.05), transparent 70%),
+    var(--void-surface);
+  border-top: 1px solid var(--void-border);
+}
+
+.container {
+  max-width: 1320px;
+  margin: 0 auto;
+}
+
+.head {
+  max-width: 760px;
+  margin-bottom: clamp(40px, 6vw, 72px);
+}
+
+.kicker {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sync-green);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 3.8vw, 3rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+  margin: 12px 0 14px;
+}
+
+.title em {
+  font-style: normal;
+  color: var(--text-secondary);
+}
+
+.lede {
+  color: var(--text-secondary);
+  font-size: var(--text-lg);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* The track: one rail across three phases. Solid and green up to "you are
+   here", dashed after it. It draws itself when the section comes into view. */
+
+.track {
+  --rail-y: 9px;
+  position: relative;
+  display: grid;
+  grid-template-columns: 2fr 3fr 3fr;
+  gap: 0 clamp(16px, 2.5vw, 32px);
+}
+
+.track::before,
+.track::after {
+  content: "";
+  position: absolute;
+  top: var(--rail-y);
+  height: 2px;
+  border-radius: 2px;
+}
+
+/* future: dashed, full width */
+.track::before {
+  left: 0;
+  right: 0;
+  background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.18) 0 8px, transparent 8px 16px);
+}
+
+/* past: solid green, grows to the "next" station */
+.track::after {
+  left: 0;
+  width: 0;
+  background: linear-gradient(90deg, rgba(0, 230, 153, 0.4), var(--sync-green));
+  box-shadow: 0 0 12px rgba(0, 230, 153, 0.5);
+  transition: width 1.4s var(--ease-out) 0.15s;
+}
+
+.trackOn::after {
+  /* 2fr of 8fr, plus the first gap: the start of the "Next" column */
+  width: calc((100% - 2 * clamp(16px, 2.5vw, 32px)) * 2 / 8 + clamp(16px, 2.5vw, 32px));
+}
+
+.phase {
+  display: grid;
+  align-content: start;
+  gap: 22px;
+  min-width: 0;
+}
+
+.station {
+  position: relative;
+  display: grid;
+  gap: 14px;
+}
+
+.dot {
+  position: relative;
+  z-index: 1;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  background: var(--void-surface);
+}
+
+.shipped .dot {
+  border-color: var(--sync-green);
+  background: var(--sync-green);
+  box-shadow: 0 0 14px rgba(0, 230, 153, 0.6);
+}
+
+.next .dot {
+  border-color: var(--sync-green);
+  background: var(--void-surface);
+}
+
+.next .dot::after {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 2px solid var(--sync-green);
+  opacity: 0;
+  animation: beacon 2.4s var(--ease-out) infinite;
+}
+
+.later .dot {
+  border-style: dashed;
+}
+
+@keyframes beacon {
+  0% { transform: scale(0.6); opacity: 0.9; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+.here {
+  position: absolute;
+  top: -1px;
+  left: 30px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sync-green);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  background: var(--sync-green-dim);
+}
+
+.phaseLabel {
+  display: grid;
+  gap: 2px;
+}
+
+.phaseLabel strong {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 600;
+}
+
+.phaseLabel span {
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+}
+
+.items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.item {
+  padding: 18px 20px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--void-border);
+  background: var(--void-elevated);
+  transition: border-color var(--duration-normal), transform var(--duration-normal) var(--ease-out);
+}
+
+.item:hover {
+  border-color: rgba(255, 255, 255, 0.16);
+  transform: translateY(-2px);
+}
+
+.shipped .item {
+  border-color: rgba(0, 230, 153, 0.25);
+}
+
+.later .item {
+  background: transparent;
+  border-style: dashed;
+}
+
+.itemTop {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary);
+}
+
+.shipped .tag {
+  color: var(--sync-green);
+}
+
+.gap {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(255, 45, 106, 0.5);
+  color: var(--client-magenta);
+}
+
+.item h3 {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 6px;
+}
+
+.what {
+  margin: 0 0 8px;
+  color: var(--text-primary);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+
+.why {
+  margin: 0;
+  color: var(--text-tertiary);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+}
+
+.ask {
+  margin: 40px 0 0;
+  color: var(--text-secondary);
+}
+
+.ask a {
+  color: var(--sync-green);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.ask a:hover {
+  text-decoration: underline;
+}
+
+/* Narrow screens: the rail runs down the left side instead. */
+@media (max-width: 900px) {
+  .track {
+    grid-template-columns: 1fr;
+    gap: 36px;
+    padding-left: 34px;
+  }
+
+  .track::before,
+  .track::after {
+    top: 0;
+    left: 9px;
+    width: 2px;
+    height: auto;
+  }
+
+  .track::before {
+    bottom: 0;
+    background: repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0 8px, transparent 8px 16px);
+  }
+
+  /* the solid "shipped" stretch belongs to the shipped phase itself */
+  .track::after {
+    display: none;
+  }
+
+  .phase {
+    position: relative;
+  }
+
+  .shipped::before {
+    content: "";
+    position: absolute;
+    left: -25px;
+    top: 0;
+    width: 2px;
+    height: 0;
+    background: linear-gradient(180deg, rgba(0, 230, 153, 0.4), var(--sync-green));
+    box-shadow: 0 0 12px rgba(0, 230, 153, 0.5);
+    transition: height 1.4s var(--ease-out) 0.15s;
+  }
+
+  .trackOn .shipped::before {
+    height: calc(100% + 36px);
+  }
+
+  .station {
+    margin-left: -34px;
+    grid-template-columns: 20px 1fr;
+    align-items: start;
+    gap: 14px;
+  }
+
+  .here {
+    position: static;
+    grid-column: 2;
+    justify-self: start;
+    order: -1;
+  }
+
+  .phaseLabel {
+    grid-column: 2;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track::after,
+  .shipped::before,
+  .item {
+    transition: none;
+  }
+
+  .next .dot::after {
+    animation: none;
+  }
+}

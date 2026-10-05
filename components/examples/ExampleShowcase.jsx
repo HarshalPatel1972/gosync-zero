@@ -150,8 +150,9 @@ export default function ExampleShowcase() {
                     <a
                       href={example.primaryButton.disabled ? undefined : example.primaryButton.href}
                       className={`${styles.btnPrimary} ${
-                        example.primaryButton.disabled ? styles.btnDisabled : ""
+                        example.primaryButton.disabled ? styles.btnDisabled : "gs-btn gs-btn-primary"
                       }`}
+                      aria-disabled={example.primaryButton.disabled || undefined}
                       target={example.primaryButton.external ? "_blank" : undefined}
                       rel={example.primaryButton.external ? "noopener noreferrer" : undefined}
                     >
@@ -165,8 +166,9 @@ export default function ExampleShowcase() {
                     <a
                       href={example.secondaryButton.disabled ? undefined : example.secondaryButton.href}
                       className={`${styles.btnSecondary} ${
-                        example.secondaryButton.disabled ? styles.btnDisabled : ""
+                        example.secondaryButton.disabled ? styles.btnDisabled : "gs-btn gs-btn-ghost"
                       }`}
+                      aria-disabled={example.secondaryButton.disabled || undefined}
                       target={example.secondaryButton.external ? "_blank" : undefined}
                       rel={example.secondaryButton.external ? "noopener noreferrer" : undefined}
                     >

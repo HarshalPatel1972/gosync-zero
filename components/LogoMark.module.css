@@ -1,0 +1,124 @@
+/* At rest: three green nodes, connected. */
+
+.mark {
+  color: var(--sync-green);
+  overflow: visible;
+}
+
+.node {
+  fill: currentColor;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.link {
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.ripple {
+  fill: none;
+  stroke: var(--client-magenta);
+  stroke-width: 1.2;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.packet {
+  fill: #ffffff;
+  opacity: 0;
+}
+
+/* The story plays whenever the link holding the mark is hovered or focused.
+   Five acts over 1.6s:
+     0–12%   connected
+     12–48%  the right device loses its connection (links fade, node turns
+             magenta) and saves a change locally (ripple)
+     48–56%  the connection returns
+     56–86%  the change travels to the server, then to the other device
+     86–100% everything glows: in sync */
+
+:global(a:hover) > .mark .linkRight,
+:global(a:focus-visible) > .mark .linkRight,
+:global(a:hover) > .mark .linkBottom,
+:global(a:focus-visible) > .mark .linkBottom {
+  animation: drop 1.6s var(--ease-in-out) both;
+}
+
+:global(a:hover) > .mark .deviceRight,
+:global(a:focus-visible) > .mark .deviceRight {
+  animation: offline 1.6s var(--ease-in-out) both;
+}
+
+:global(a:hover) > .mark .ripple,
+:global(a:focus-visible) > .mark .ripple {
+  animation: save 1.6s var(--ease-out) both;
+}
+
+:global(a:hover) > .mark .packetUp,
+:global(a:focus-visible) > .mark .packetUp {
+  animation: up 1.6s linear both;
+}
+
+:global(a:hover) > .mark .packetDown,
+:global(a:focus-visible) > .mark .packetDown {
+  animation: down 1.6s linear both;
+}
+
+:global(a:hover) > .mark .server,
+:global(a:focus-visible) > .mark .server,
+:global(a:hover) > .mark .deviceLeft,
+:global(a:focus-visible) > .mark .deviceLeft {
+  animation: synced 1.6s var(--ease-out) both;
+}
+
+@keyframes drop {
+  0%, 12% { opacity: 1; stroke-dasharray: 10 0; }
+  20%, 48% { opacity: 0.25; stroke-dasharray: 1.5 2.5; }
+  56%, 100% { opacity: 1; stroke-dasharray: 10 0; }
+}
+
+@keyframes offline {
+  0%, 12% { fill: var(--sync-green); transform: scale(1); }
+  20%, 48% { fill: var(--client-magenta); transform: scale(0.9); }
+  56% { fill: var(--sync-green); transform: scale(1); }
+  88% { fill: var(--sync-green); transform: scale(1.18); filter: drop-shadow(0 0 3px var(--sync-green)); }
+  100% { fill: var(--sync-green); transform: scale(1); }
+}
+
+@keyframes save {
+  0%, 24% { opacity: 0; transform: scale(1); }
+  28% { opacity: 1; transform: scale(1); }
+  44% { opacity: 0; transform: scale(2.1); }
+  100% { opacity: 0; transform: scale(2.1); }
+}
+
+/* right device (24,22) → server (16,8) */
+@keyframes up {
+  0%, 56% { opacity: 0; transform: translate(0, 0); }
+  58% { opacity: 1; transform: translate(0, 0); }
+  70% { opacity: 1; transform: translate(-8px, -14px); }
+  72%, 100% { opacity: 0; transform: translate(-8px, -14px); }
+}
+
+/* server (16,8) → left device (8,22) */
+@keyframes down {
+  0%, 71% { opacity: 0; transform: translate(0, 0); }
+  72% { opacity: 1; transform: translate(0, 0); }
+  84% { opacity: 1; transform: translate(-8px, 14px); }
+  86%, 100% { opacity: 0; transform: translate(-8px, 14px); }
+}
+
+@keyframes synced {
+  0%, 84% { transform: scale(1); filter: none; }
+  92% { transform: scale(1.18); filter: drop-shadow(0 0 3px var(--sync-green)); }
+  100% { transform: scale(1); filter: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mark * {
+    animation: none !important;
+  }
+}

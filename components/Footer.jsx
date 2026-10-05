@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import styles from "./Footer.module.css";
+import LogoMark from "./LogoMark";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -57,7 +58,9 @@ export default function Footer() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            Ready to Sync Smarter?
+            Your users will lose signal today.
+            <br />
+            <span className={styles.ctaAccent}>Their work doesn&apos;t have to.</span>
           </motion.h2>
           <motion.div
             className={styles.ctaButtons}
@@ -66,14 +69,14 @@ export default function Footer() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
-            <Link href="/docs" className={styles.btnPrimary}>
+            <Link href="/docs/quick-start" className={`${styles.btnPrimary} gs-btn gs-btn-primary`}>
               Get Started
             </Link>
             <a 
               href="https://github.com/HarshalPatel1972/GoSync" 
               target="_blank"
               rel="noopener noreferrer"
-              className={styles.btnSecondary}
+              className={`${styles.btnSecondary} gs-btn gs-btn-ghost`}
             >
               View on GitHub
             </a>
@@ -88,44 +91,10 @@ export default function Footer() {
             {/* Brand */}
             <div className={styles.brandColumn}>
               <Link href="/" className={styles.logo}>
-                <svg
-                  className={styles.logoIcon}
-                  width="32"
-                  height="32"
-                  viewBox="0 0 32 32"
-                  fill="none"
-                >
-                  <circle cx="16" cy="8" r="4" fill="currentColor" />
-                  <circle cx="8" cy="22" r="4" fill="currentColor" />
-                  <circle cx="24" cy="22" r="4" fill="currentColor" />
-                  <line
-                    x1="16"
-                    y1="12"
-                    x2="10"
-                    y2="18"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  />
-                  <line
-                    x1="16"
-                    y1="12"
-                    x2="22"
-                    y2="18"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  />
-                  <line
-                    x1="12"
-                    y1="22"
-                    x2="20"
-                    y2="22"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  />
-                </svg>
+                <LogoMark className={styles.logoIcon} />
                 <span className={styles.logoText}>GoSync</span>
               </Link>
-              <p className={styles.tagline}>In an async world. GoSync.</p>
+              <p className={styles.tagline}>Offline-first sync for web apps that have to work where the internet doesn&apos;t.</p>
               <p className={styles.openSource}>Open Source · MIT License</p>
             </div>
 

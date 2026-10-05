@@ -27,13 +27,13 @@ body {
 
 /* Focus styles for accessibility */
 :focus-visible {
-  outline: 2px solid var(--sync-cyan);
+  outline: 2px solid var(--sync-green);
   outline-offset: 2px;
 }
 
 /* Selection */
 ::selection {
-  background-color: var(--sync-cyan);
+  background-color: var(--sync-green);
   color: var(--void-black);
 }
 
@@ -168,183 +168,91 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ============================================
-   Buttons
+   Buttons: one interaction model for every call to action.
+   Components keep their own size and colour; add `gs-btn` plus
+   `gs-btn-primary` or `gs-btn-ghost` for the motion and states.
    ============================================ */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-sm);
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: var(--text-sm);
-  padding: 12px 24px;
-  border-radius: var(--radius-md);
-  border: none;
-  cursor: pointer;
-  transition: all var(--duration-normal) var(--ease-out);
-  text-decoration: none;
+.gs-btn {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    transform 320ms var(--ease-out),
+    box-shadow 320ms var(--ease-out),
+    background-color 200ms ease,
+    border-color 200ms ease,
+    color 200ms ease;
 }
 
-.btn-primary {
-  background-color: var(--sync-cyan);
-  color: var(--void-black);
+.gs-btn svg {
+  transition: transform 320ms var(--ease-out);
 }
 
-.btn-primary:hover {
+.gs-btn:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-glow-cyan);
 }
 
-.btn-secondary {
-  background-color: transparent;
-  color: var(--text-primary);
-  border: 1px solid var(--void-border);
+.gs-btn:hover svg:last-child {
+  transform: translateX(3px);
 }
 
-.btn-secondary:hover {
-  border-color: var(--sync-cyan);
-  color: var(--sync-cyan);
+.gs-btn:active {
+  transform: translateY(0) scale(0.97);
+  transition-duration: 90ms;
 }
 
-.btn-lg {
-  font-size: var(--text-base);
-  padding: 16px 32px;
-  border-radius: var(--radius-lg);
+.gs-btn:focus-visible {
+  outline: 2px solid var(--sync-green);
+  outline-offset: 3px;
 }
 
-/* ============================================
-   Section Label
-   ============================================ */
-.section-label {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-sm);
-  font-family: var(--font-body);
-  font-size: var(--text-xs);
-  font-weight: 600;
-  color: var(--sync-cyan);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  margin-bottom: var(--space-lg);
+/* Primary: a glow and a light sweep, like a signal passing through. */
+.gs-btn-primary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.5) 50%, transparent 65%);
+  transform: translateX(-110%);
+  transition: transform 700ms var(--ease-out);
 }
 
-.section-label::before {
-  content: '';
-  display: block;
-  width: 40px;
-  height: 2px;
-  background-color: var(--sync-cyan);
+.gs-btn-primary:hover {
+  box-shadow: 0 12px 32px -10px rgba(0, 230, 153, 0.7), 0 0 0 1px rgba(0, 230, 153, 0.55);
 }
 
-/* ============================================
-   Container
-   ============================================ */
-.container {
-  width: 100%;
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 var(--space-xl);
+.gs-btn-primary:hover::after {
+  transform: translateX(110%);
 }
 
-@media (max-width: 768px) {
-  .container {
-    padding: 0 var(--space-lg);
-  }
+.gs-btn-primary:active {
+  box-shadow: 0 4px 14px -6px rgba(0, 230, 153, 0.6);
 }
 
-/* ============================================
-   Animations
-   ============================================ */
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+/* Ghost: brightens its edge instead of glowing. */
+.gs-btn-ghost:hover {
+  border-color: rgba(255, 255, 255, 0.32);
+  background-color: rgba(255, 255, 255, 0.04);
+  box-shadow: 0 10px 28px -12px rgba(0, 0, 0, 0.8);
 }
 
-@keyframes pulse-glow {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 1; }
-}
-
-@keyframes spin-slow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-@keyframes draw-line {
-  to { stroke-dashoffset: 0; }
-}
-
-@keyframes fade-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes typing {
-  from { width: 0; }
-  to { width: 100%; }
-}
-
-@keyframes blink {
-  50% { opacity: 0; }
-}
-
-/* ============================================
-   Noise Texture Overlay
-   ============================================ */
-.noise-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 9998;
-  opacity: 0.03;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-}
-
-/* ============================================
-   Reduced Motion
-   ============================================ */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+  .gs-btn,
+  .gs-btn:hover,
+  .gs-btn:active,
+  .gs-btn:hover svg:last-child {
+    transform: none;
   }
-  
-  html {
-    scroll-behavior: auto;
+
+  .gs-btn-primary::after {
+    display: none;
   }
 }
 
 /* ============================================
    Utility Classes
    ============================================ */
-.text-gradient-cyan {
-  background: linear-gradient(135deg, var(--sync-cyan) 0%, #00B8D4 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.glow-cyan {
-  box-shadow: var(--shadow-glow-cyan);
-}
-
-.glow-magenta {
-  box-shadow: var(--shadow-glow-magenta);
-}
-
 /* Hide scrollbar but keep functionality */
 .no-scrollbar {
   -ms-overflow-style: none;
@@ -415,8 +323,28 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Syntax Highlighting */
 .token-keyword { color: var(--merkle-purple); }
-.token-type { color: var(--sync-cyan); }
+.token-type { color: var(--sync-green); }
 .token-string { color: var(--server-emerald); }
 .token-comment { color: var(--text-tertiary); font-style: italic; }
 .token-function { color: #E0AF68; }
 .token-punctuation { color: var(--text-secondary); }
+
+/* Keyboard users can jump past the navigation. */
+.skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: var(--z-toast);
+  padding: 10px 16px;
+  border-radius: var(--radius-md);
+  background: var(--sync-green);
+  color: var(--void-black);
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateY(-160%);
+  transition: transform var(--duration-normal) var(--ease-out);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}

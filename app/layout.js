@@ -23,6 +23,11 @@ const siteTitle = "GoSync: offline-first, real-time sync for web apps";
 const siteDescription =
   "Self-hosted, open-source sync engine written in Go. Your web app works offline, syncs across every device and tab in real time, and resolves conflicts automatically.";
 
+export const viewport = {
+  themeColor: "#050508",
+  colorScheme: "dark",
+};
+
 export const metadata = {
   metadataBase: new URL("https://gosync-zero.vercel.app"),
   title: {
@@ -73,6 +78,9 @@ export default function RootLayout({ children }) {
       className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}
     >
       <body>
+        <a href="#main" className="skip-link">
+          Skip to content
+        </a>
         <div className="noise-overlay" aria-hidden="true" />
         {children}
       </body>
