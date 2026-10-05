@@ -1,31 +1,50 @@
 ---
 title: Introduction
-description: Learn what GoSync is and why it solves the Two-Language Problem
+description: What GoSync is, how it works, and when to use it
 ---
 
 # Introduction
 
-**GoSync** is an offline-first synchronization engine designed to solve the "Two-Language Problem" in modern web development.
+**GoSync** is an offline-first, real-time sync engine for web apps. You host it yourself.
 
-Most sync solutions force you to duplicate business logic: writing validation in JavaScript for the frontend and again in Go/Node/Python for the backend. GoSync eliminates this by running a **Shared Brain**.
+Your app reads and writes a local database in the browser, so every interaction is instant and
+keeps working without a connection. GoSync syncs those changes to your server and to the user's
+other devices and tabs in real time, and resolves conflicts automatically. The server is a single
+Go binary on SQLite or PostgreSQL, so you own the server and the data.
 
 ## Why GoSync?
 
-- **Unified Logic:** Write your conflict resolution and validation rules once in Go. We compile it to WASM for the browser and a native binary for the server.
-- **Bandwidth Efficient:** Uses **Merkle Trees** to compare datasets. If you have 1GB of data but only changed 1KB, we only send 1KB.
-- **True Offline:** Your app works perfectly without internet. We queue changes in **IndexedDB** and sync automatically when the connection returns.
-- **Privacy-Centric:** Self-hosted. No data ever touches a third-party cloud.
+- **Local-first:** writes land in IndexedDB first and succeed offline. Data survives reloads and restarts.
+- **Real-time:** connected devices are notified the moment data changes.
+- **Automatic conflict resolution:** each field is a last-writer-wins register ordered by a hybrid logical clock. Concurrent edits to *different* fields merge, and every device converges to the same state.
+- **Efficient:** devices download only what changed since they last synced and upload only their own pending writes. Both directions are batched and safe to retry.
+- **Secure by default:** JWT authentication (your own secret, or JWKS from Auth0, Clerk, Supabase, Firebase, Cognito…), per-user data isolation, origin checks, and rate and size limits.
+- **Multi-tab aware:** one tab holds the connection; the others share the same local database and update instantly.
+- **Scales out:** run several server instances on PostgreSQL, which coordinate automatically.
+- **Self-hosted and open source:** MIT licensed, with no per-seat or per-request pricing.
 
-## Architecture
+## How it works
 
-At its core, GoSync is a matching engine. It maintains a Merkle Tree of your dataset on both the Client (Browser) and Server.
+1. **Write locally.** `db.set('todos', id, {...})` updates IndexedDB and appends the write to a local outbox, in one transaction. Your UI updates immediately.
+2. **Push.** When online, the device sends its outbox to the server, which applies each field only if it's newer than what it has.
+3. **Pull.** Each device remembers a *cursor* (the last server version it saw) and asks for everything after it.
+4. **Poke.** When data changes, the server nudges every other connected device to pull, so changes appear in real time.
 
-1. **Client:** The Go-WASM worker intercepts data changes and writes them to IndexedDB.
-2. **Sync:** When online, it exchanges Merkle Root Hashes with the server.
-3. **Delta:** If hashes differ, it drills down to find the specific items that changed and exchanges only those.
+Because the merge rule is deterministic, every device ends up identical no matter what order
+changes arrive in, how long a device was offline, or how often a message is retried.
 
-## Current Status
+## When to use it
 
-> **Note:** GoSync is currently in **Public Beta (v0.1.0)**. While the core engine is stable, APIs may change.
+GoSync fits apps where each user (or team) works with their own dataset and wants it fast,
+offline-capable and synced across devices: field-service and inspection apps, order taking,
+note-taking and productivity tools, CRMs, kanban boards, and internal dashboards.
 
-Ready to build? [Get Started →](/docs/quick-start)
+It's not the right tool for collaborative editing of the *same* text (use Yjs or Automerge), or
+for syncing huge shared datasets to every user.
+
+## Status
+
+GoSync **v2.0.0** is the current release. It's tested in Chromium, Firefox and WebKit, on SQLite
+and PostgreSQL, and under load (1,000+ writes/s, p99 under 100 ms).
+
+Ready to build? [Quick Start →](/docs/quick-start)

@@ -8,60 +8,26 @@ export default function Pricing() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
+  // GoSync is open source with no paid tiers. Don't add paid plans here
+  // until the support, billing and SLA behind them actually exist.
   const plans = [
     {
       id: "opensource",
       name: "Open Source",
       price: "$0",
       period: "forever",
-      description: "Everything you need to build offline-first apps.",
+      description: "The complete sync engine, self-hosted on your infrastructure.",
       features: [
-        "Full sync engine",
-        "MIT licensed",
-        "Community support",
-        "All core features",
-        "Unlimited devices",
+        "Full sync engine, client and server",
+        "MIT licensed: use it commercially",
+        "Unlimited users, devices and data",
+        "No per-seat or per-request fees",
+        "Your data never leaves your servers",
+        "Community support on GitHub",
       ],
       cta: "Get Started",
-      ctaHref: "#",
-      highlighted: false,
-    },
-    {
-      id: "teams",
-      name: "Teams",
-      price: "$49",
-      period: "per seat / month",
-      description: "For teams that need priority support and collaboration tools.",
-      features: [
-        "Everything in Open Source",
-        "Priority email support",
-        "Private Discord channel",
-        "SLA guarantee (99.9%)",
-        "Team dashboard",
-        "Usage analytics",
-      ],
-      cta: "Start Free Trial",
-      ctaHref: "#",
+      ctaHref: "/docs/quick-start",
       highlighted: true,
-      badge: "Popular",
-    },
-    {
-      id: "enterprise",
-      name: "Enterprise",
-      price: "Custom",
-      period: "contact us",
-      description: "For organizations with advanced security and compliance needs.",
-      features: [
-        "Everything in Teams",
-        "SSO / SAML integration",
-        "Audit logs",
-        "Dedicated CSM",
-        "Custom SLA",
-        "On-premise option",
-      ],
-      cta: "Contact Sales",
-      ctaHref: "#",
-      highlighted: false,
     },
   ];
 
@@ -95,15 +61,15 @@ export default function Pricing() {
             Pricing
           </motion.span>
           <motion.h2 className={styles.title} variants={itemVariants}>
-            Start Free. Scale Forever.
+            Free. Forever.
           </motion.h2>
           <motion.p className={styles.description} variants={itemVariants}>
-            Open source at heart. Premium support when you need it.
+            GoSync is open source. You run it, you own it, and there&apos;s no bill as you grow.
           </motion.p>
         </motion.div>
 
         <motion.div
-          className={styles.grid}
+          className={`${styles.grid} ${styles.single}`}
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}

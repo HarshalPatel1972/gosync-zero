@@ -11,30 +11,30 @@ export default function Roadmap() {
   const roadmapItems = [
     {
       status: "done",
-      version: "v1.0",
-      title: "Core Engine",
-      description: "Merkle Tree sync, LWW conflict resolution, IndexedDB storage, WebSocket transport.",
+      version: "v2.0",
+      title: "Production Engine",
+      description: "Per-field LWW on hybrid logical clocks, cursor sync, JWT auth, multi-tab, PostgreSQL scale-out, metrics.",
       features: ["WASM compilation", "Offline-first", "Real-time sync"],
     },
     {
       status: "current",
-      version: "v1.1",
+      version: "v2.x",
       title: "Developer Experience",
       description: "CLI tooling, better error messages, TypeScript SDK improvements.",
       features: ["gosync CLI", "Type generation", "Debug mode"],
     },
     {
       status: "planned",
-      version: "v1.2",
+      version: "v3.0",
       title: "Advanced Conflict Resolution",
       description: "Custom merge strategies, CRDT support, conflict callbacks.",
       features: ["Custom resolvers", "CRDT types", "Merge hooks"],
     },
     {
       status: "planned",
-      version: "v2.0",
-      title: "GoSync Cloud (Optional)",
-      description: "Managed hosting, team dashboards, analytics. Self-hosted remains free forever.",
+      version: "Later",
+      title: "Ecosystem",
+      description: "React hooks, more examples and integrations. Self-hosted, open source and free forever.",
       features: ["Managed sync", "Team admin", "Usage metrics"],
     },
   ];

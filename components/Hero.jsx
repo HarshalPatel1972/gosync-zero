@@ -56,7 +56,7 @@ export default function Hero() {
         {/* Badge */}
         <motion.div className={styles.badge} variants={itemVariants}>
           <span className={styles.badgeDot} />
-          Now in Public Beta
+          v2.0 is live
         </motion.div>
 
         {/* Tagline */}
@@ -80,9 +80,9 @@ export default function Hero() {
 
         {/* Subtitle */}
         <motion.p className={styles.subtitle} variants={itemVariants}>
-          Write your sync logic once in Go. Deploy to server and browser.
+          Offline-first, real-time sync for web apps. Self-hosted, written in Go.
           <br />
-          Offline-first. Automatic conflict resolution. Zero vendor lock-in.
+          Works offline. Syncs every device and tab. Resolves conflicts automatically. No vendor lock-in.
         </motion.p>
 
         {/* CTA Buttons */}

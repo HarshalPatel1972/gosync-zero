@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 import styles from "./Footer.module.css";
 
@@ -86,7 +87,7 @@ export default function Footer() {
           <div className={styles.linksGrid}>
             {/* Brand */}
             <div className={styles.brandColumn}>
-              <a href="#" className={styles.logo}>
+              <Link href="/" className={styles.logo}>
                 <svg
                   className={styles.logoIcon}
                   width="32"
@@ -123,7 +124,7 @@ export default function Footer() {
                   />
                 </svg>
                 <span className={styles.logoText}>GoSync</span>
-              </a>
+              </Link>
               <p className={styles.tagline}>In an async world. GoSync.</p>
               <p className={styles.openSource}>Open Source · MIT License</p>
             </div>

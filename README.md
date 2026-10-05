@@ -1,168 +1,82 @@
 <div align="center">
 
-# 🔄 GoSync
+# 🔄 GoSync Website
 
-### Offline-First Sync Engine for Modern Web Apps
+### The website and documentation for [GoSync](https://github.com/HarshalPatel1972/GoSync)
 
-[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
-[![Next.js](https://img.shields.io/badge/Next.js-15-black)](https://nextjs.org/)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Next.js](https://img.shields.io/badge/Next.js-16-black)](https://nextjs.org/)
 
-**Write once. Run everywhere. Sync automatically.**
-
-[Live Demo](https://gosync-zero.vercel.app) · [Documentation](https://gosync-zero.vercel.app/docs) · [NPM Package](https://www.npmjs.com/package/@harshalpatel2868/gosync-client)
+[Website](https://gosync-zero.vercel.app) · [Documentation](https://gosync-zero.vercel.app/docs) · [GoSync on GitHub](https://github.com/HarshalPatel1972/GoSync) · [npm package](https://www.npmjs.com/package/@harshalpatel2868/gosync-client)
 
 </div>
 
 ---
 
-## ✨ What is GoSync?
+## What is GoSync?
 
-GoSync is an **offline-first synchronization engine** that solves the "Two-Language Problem" in modern web development. Most sync solutions force you to duplicate business logic — writing validation in JavaScript for the frontend and again in Go/Node/Python for the backend.
-
-**GoSync eliminates this** by running a **Shared Brain**:
-- 🧠 Write conflict resolution logic **once in Go**
-- 🌐 Compile to **WASM** for browsers, native binary for servers
-- 📡 Uses **Merkle Trees** for bandwidth-efficient delta sync
-- 💾 True offline with **IndexedDB** persistence
-
----
-
-## 🚀 Quick Start
-
-```bash
-# Install the SDK
-npm install @harshalpatel2868/gosync-client
-```
+GoSync is an **offline-first, real-time sync engine for web apps** that you host yourself. Your
+app reads and writes a local database in the browser, so it's instant and works offline. GoSync
+syncs changes to your server and to the user's other devices and tabs in real time, and resolves
+conflicts automatically. The server is a single Go binary on SQLite or PostgreSQL.
 
 ```javascript
-import { GoSync } from '@harshalpatel2868/gosync-client';
+import { createClient } from '@harshalpatel2868/gosync-client';
 
-// Initialize
-await GoSync.init({
-  url: 'ws://localhost:8080/sync',
-  debug: true
-});
+const db = await createClient({ url: 'wss://sync.example.com/sync', getToken: () => auth.getIdToken() });
 
-// Add data (saved to IndexedDB immediately)
-await GoSync.add('todos', {
-  id: 'uuid-1234',
-  title: 'Buy groceries',
-  completed: false,
-  updated_at: new Date().toISOString()
-});
-
-// Subscribe to changes
-GoSync.subscribe('todos', (data) => {
-  console.log('Data synced:', data);
-});
+await db.set('todos', crypto.randomUUID(), { title: 'Buy milk', done: false }); // works offline
+db.watch('todos', (todos) => render(todos)); // live across tabs and devices
 ```
 
----
+The engine itself, its source, releases and issue tracker live in
+[HarshalPatel1972/GoSync](https://github.com/HarshalPatel1972/GoSync). This repository is only the website.
 
-## 🏗️ Architecture
+## What's in this repo
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                        Client (Browser)                      │
-├─────────────────────────────────────────────────────────────┤
-│  ┌─────────────┐    ┌──────────────┐    ┌───────────────┐  │
-│  │  Your App   │───▶│  GoSync SDK  │───▶│   IndexedDB   │  │
-│  └─────────────┘    └──────────────┘    └───────────────┘  │
-│                            │                                 │
-│                     ┌──────▼──────┐                         │
-│                     │  WASM Core  │                         │
-│                     │ (Merkle Tree)│                         │
-│                     └──────┬──────┘                         │
-└────────────────────────────┼────────────────────────────────┘
-                             │ WebSocket
-┌────────────────────────────▼────────────────────────────────┐
-│                        Server (Go)                          │
-├─────────────────────────────────────────────────────────────┤
-│  ┌──────────────┐    ┌──────────────┐    ┌───────────────┐ │
-│  │  Sync Engine │───▶│  Merkle Tree │───▶│   Database    │ │
-│  └──────────────┘    └──────────────┘    │ (SQLite/PG)   │ │
-│                                          └───────────────┘ │
-└─────────────────────────────────────────────────────────────┘
-```
+| Path | Contents |
+|------|----------|
+| `app/` | Next.js App Router pages: home, `/docs/[slug]`, `/examples` |
+| `components/` | Homepage sections and docs UI |
+| `content/docs/` | Documentation pages in MDX (one file per page) |
 
----
+The homepage's sync animation is a simulation that runs entirely in the browser. It shows how
+GoSync behaves but doesn't connect to a server. The runnable demo is
+[`examples/todo`](https://github.com/HarshalPatel1972/GoSync/tree/main/examples/todo) in the main repo.
 
-## 📦 Features
-
-| Feature | Description |
-|---------|-------------|
-| **🔌 True Offline** | Works without internet using IndexedDB |
-| **⚡ Delta Sync** | Merkle Trees ensure only changed data is transferred |
-| **🔒 Self-Hosted** | No third-party cloud, your data stays yours |
-| **🎯 Last-Write-Wins** | Simple, predictable conflict resolution |
-| **🌍 Cross-Platform** | Same Go logic runs on browser (WASM) and server |
-
----
-
-## 🛠️ Development
+## Development
 
 ```bash
-# Clone the repository
-git clone https://github.com/HarshalPatel1972/GoSync.git
-cd GoSync
-
-# Install dependencies
+git clone https://github.com/HarshalPatel1972/GoSync-zero.git
+cd GoSync-zero
 npm install
-
-# Run development server
-npm run dev
-
-# Build for production
-npm run build
+npm run dev     # http://localhost:3000
+npm run build   # production build
 ```
 
----
+## Editing the docs
 
-## 📚 Documentation
+Each docs page is an MDX file in `content/docs/`. To add a page:
 
-Visit our [documentation](https://gosync-zero.vercel.app/docs) for:
+1. Create `content/docs/NN-your-page.mdx` with `title` and `description` front matter.
+2. Map its slug to the file in `slugToFile` in `app/docs/[[...slug]]/page.js`.
+3. Add it to `navItems` in `components/docs/DocsSidebar.jsx`.
 
-- [Introduction](https://gosync-zero.vercel.app/docs/introduction) - Why GoSync?
-- [Quick Start](https://gosync-zero.vercel.app/docs/quick-start) - Get started in 5 minutes
-- [Server Setup](https://gosync-zero.vercel.app/docs/server-setup) - Deploy the Go server
-- [Conflict Resolution](https://gosync-zero.vercel.app/docs/conflict-resolution) - Understanding LWW
+Keep code samples in sync with the real client API
+([`sdk/js/index.d.ts`](https://github.com/HarshalPatel1972/GoSync/blob/main/sdk/js/index.d.ts))
+and the server configuration
+([`docs/OPERATIONS.md`](https://github.com/HarshalPatel1972/GoSync/blob/main/docs/OPERATIONS.md)).
 
----
+## Contributing
 
-## 🗺️ Roadmap
+Contributions are welcome. Please read the [Contributing Guide](CONTRIBUTING.md) first.
 
-| Version | Status | Features |
-|---------|--------|----------|
-| v0.1.0 | ✅ Released | Core offline sync, IndexedDB, WebSocket |
-| v0.2.0 | 🚧 In Progress | CRDT support, React hooks |
-| v0.3.0 | 📋 Planned | Multi-tab sync, Service Worker |
-| v1.0.0 | 🎯 Future | Production-ready, full test coverage |
+## License
 
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) first.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
+MIT. See [LICENSE](LICENSE).
 
 <div align="center">
 
-**Built with ❤️ by [Harshal Patel](https://github.com/HarshalPatel1972)**
-
-⭐ Star this repo if you find it useful!
+**Built by [Harshal Patel](https://github.com/HarshalPatel1972)**
 
 </div>

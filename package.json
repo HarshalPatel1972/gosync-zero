@@ -1,5 +1,5 @@
 {
-  "name": "test-17-a",
+  "name": "gosync-website",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,7 +9,6 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@harshalpatel2868/gosync-client": "^1.0.1",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.5.0",
     "framer-motion": "^12.23.26",

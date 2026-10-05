@@ -1,68 +1,120 @@
 ---
 title: Server Setup
-description: Deploy the GoSync server binary on any platform
+description: Install, configure and secure the GoSync server
 ---
 
 # Server Setup
 
-The GoSync server is a standalone binary. You can run it on Linux, Mac, or Windows.
+The GoSync server is a single binary for Linux, macOS and Windows. It stores data in SQLite (one
+server) or PostgreSQL (one or more servers).
 
-## Installation
+## Install
 
-Download the latest release from our [GitHub Releases](https://github.com/HarshalPatel1972/GoSync/releases) page.
+**Binary:** download from [GitHub Releases](https://github.com/HarshalPatel1972/GoSync/releases/latest):
 
 ```bash
-# Linux / Mac
-wget https://github.com/HarshalPatel1972/GoSync/releases/download/v0.1.0/gosync-server
-chmod +x gosync-server
+curl -L -o gosync.tar.gz https://github.com/HarshalPatel1972/GoSync/releases/latest/download/gosync_Linux_x86_64.tar.gz
+tar -xzf gosync.tar.gz
 ./gosync-server
 ```
+
+Builds are available for `Linux_x86_64`, `Linux_arm64`, `Darwin_x86_64`, `Darwin_arm64` and
+`Windows_x86_64` (`.zip`).
+
+**Docker:** build the image straight from the repository:
+
+```bash
+docker build -t gosync https://github.com/HarshalPatel1972/GoSync.git#v2.0.0
+docker run -p 8080:8080 -e GOSYNC_JWT_SECRET=... -e GOSYNC_DATABASE_URL=postgres://... gosync
+```
+
+**Docker Compose** with PostgreSQL is in the repository's
+[`docker-compose.yml`](https://github.com/HarshalPatel1972/GoSync/blob/main/docker-compose.yml).
+
+## Authentication
+
+The server refuses to start without authentication configured. Clients send a token in their
+first message; the server verifies it and uses one of its claims (by default `sub`, the user ID)
+to choose whose data the connection can see.
+
+**Identity provider (recommended):** point GoSync at your provider's public keys.
+
+```bash
+export GOSYNC_JWKS_URL=https://YOUR_TENANT.auth0.com/.well-known/jwks.json
+export GOSYNC_JWT_ISSUER=https://YOUR_TENANT.auth0.com/
+export GOSYNC_JWT_AUDIENCE=https://api.example.com
+```
+
+This works with Auth0, Clerk, Supabase, Firebase, Cognito and any provider that publishes a JWKS.
+In the browser, `getToken` returns the user's current token:
+
+```javascript
+const db = await createClient({ url, getToken: () => auth.currentUser.getIdToken(), dbName });
+```
+
+`getToken` is called on every reconnect, so expired tokens are refreshed automatically.
+
+**Your own backend:** sign HS256 tokens with a shared secret of at least 32 bytes.
+
+```bash
+export GOSYNC_JWT_SECRET=$(openssl rand -hex 32)
+```
+
+**Shared team data:** set `GOSYNC_NAMESPACE_CLAIM` to a claim such as `org_id`, and every user
+with the same value shares one dataset.
 
 ## Configuration
 
-By default, the server runs on port `8080` and uses an embedded SQLite database (`gosync.db`). No setup required.
-
-To customize it, set environment variables:
-
-```bash
-export PORT=3000
-export DB_TYPE=postgres
-export DB_DSN="user=postgres password=secret dbname=mydb sslmode=disable"
-./gosync-server
-```
-
-### Environment Variables
+All settings are environment variables:
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `PORT` | `8080` | Server port |
-| `DB_TYPE` | `sqlite` | Database type (`sqlite`, `postgres`) |
-| `DB_DSN` | `gosync.db` | Database connection string |
-| `LOG_LEVEL` | `info` | Log verbosity (`debug`, `info`, `warn`, `error`) |
+| `GOSYNC_ADDR` | `:8080` | Listen address |
+| `GOSYNC_DATABASE_URL` | `gosync.db` | SQLite file path, or a `postgres://` URL |
+| `GOSYNC_JWKS_URL` | | Your identity provider's JWKS URL |
+| `GOSYNC_JWT_SECRET` | | HS256 secret (at least 32 bytes), instead of JWKS |
+| `GOSYNC_JWT_ISSUER` / `GOSYNC_JWT_AUDIENCE` | | Required `iss` / `aud` claims |
+| `GOSYNC_NAMESPACE_CLAIM` | `sub` | Claim that selects whose data a connection sees |
+| `GOSYNC_ALLOWED_ORIGINS` | | Comma-separated browser origins allowed to connect |
+| `GOSYNC_TLS_CERT` / `GOSYNC_TLS_KEY` | | Serve `wss://` directly (or terminate TLS at a proxy) |
+| `GOSYNC_STATIC_DIR` | | Also serve your web app from this directory |
+| `GOSYNC_METRICS_ADDR` | off | Private listener for Prometheus metrics and pprof |
+| `GOSYNC_TOMBSTONE_RETENTION` | `720h` | Clean up deleted documents after this long |
+| `GOSYNC_DB_MAX_CONNS` | `25` | PostgreSQL pool size per instance |
+| `GOSYNC_LOG_FORMAT` / `GOSYNC_LOG_LEVEL` | `json` / `info` | Log format and verbosity |
+| `GOSYNC_INSECURE_DEV_AUTH` | | `true` trusts any token. Local demos only. |
 
-## Docker Deployment
+Endpoints: `/sync` (WebSocket), `/healthz` (liveness) and `/readyz` (database reachable).
 
-For production, we recommend Docker.
-
-```yaml
-version: '3'
-services:
-  gosync:
-    image: harshalpatel1972/gosync:latest
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./data:/app/data
-    environment:
-      - LOG_LEVEL=info
-```
-
-Run with:
+## Commands
 
 ```bash
-docker-compose up -d
+gosync-server                           # run the server
+gosync-server migrate                   # apply database migrations and exit
+gosync-server compact -older-than 720h  # clean up old deleted documents once
 ```
+
+## Permissions and validation
+
+To enforce rules on the server, such as read-only collections or field validation, embed the
+server in your own Go program. It's a standard `http.Handler`:
+
+```go
+srv, _ := server.New(server.Config{
+    Store: store,
+    Auth:  auth,
+    ValidateMutation: func(ctx context.Context, p server.Principal, m protocol.Mutation) error {
+        if m.Collection == "announcements" && !isAdmin(p.Subject) {
+            return errors.New("announcements are read-only")
+        }
+        return nil
+    },
+})
+http.Handle("/sync", srv.Handler())
+```
+
+A rejected write is undone on the device that made it and reported through `db.onError`.
 
 ---
 
-**Next:** [Understand conflict resolution →](/docs/conflict-resolution)
+**Next:** [How conflicts are resolved →](/docs/conflict-resolution)

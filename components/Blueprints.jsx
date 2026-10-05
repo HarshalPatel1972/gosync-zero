@@ -19,7 +19,7 @@ export default function Blueprints() {
       fixes: [
         { label: "True Offline", desc: "The driver's app writes to local storage instantly. No spinners." },
         { label: "Queueing", desc: "GoSync holds the \"Delivered\" status in a persistent queue." },
-        { label: "Auto-Reconcile", desc: "The second they hit 4G, the Merkle Tree syncs just that one record." },
+        { label: "Auto-Reconcile", desc: "The second they hit 4G, only that pending change is uploaded." },
       ],
     },
     {
@@ -30,8 +30,8 @@ export default function Blueprints() {
       pain: "Internet goes down during the morning rush. The POS stops. Revenue stops.",
       fixes: [
         { label: "Business as Usual", desc: "The POS continues to accept orders and modify inventory locally." },
-        { label: "Unified Validation", desc: "The WASM 'Brain' ensures no invalid orders, even offline." },
-        { label: "Batch Sync", desc: "When online, 500 orders sync in one optimized binary packet." },
+        { label: "Safe Inventory", desc: "Each field merges independently, so two tills editing one product don't overwrite each other's changes." },
+        { label: "Batch Sync", desc: "When online, queued orders upload in large batches, each one acknowledged exactly once." },
       ],
     },
     {
@@ -41,7 +41,7 @@ export default function Blueprints() {
       Icon: Users,
       pain: "Two users edit the same ticket. \"Last write wins\" overwrites everything.",
       fixes: [
-        { label: "Shared Logic", desc: "Both clients run the exact same Go conflict resolution code." },
+        { label: "Shared Logic", desc: "Every client and the server apply the exact same deterministic merge rules." },
         { label: "Delta Updates", desc: "GoSync detects individual field changes and merges them intelligently." },
       ],
     },

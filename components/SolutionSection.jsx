@@ -78,7 +78,7 @@ export default function SolutionSection() {
       ),
       title: "Deploy Everywhere",
       description:
-        "Run the same logic on your server and in every client browser. Changes sync automatically via Merkle Tree deltas.",
+        "Run the same Go sync engine on your server and in every browser. Only changes travel, and conflicts merge automatically.",
     },
   ];
 

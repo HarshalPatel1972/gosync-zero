@@ -18,18 +18,19 @@ export default function ExampleShowcase() {
       id: "todo",
       title: "Offline-First Task Manager",
       description:
-        "The classic 'Hello World' of sync. Create, edit, and delete tasks while offline. Watch them reconcile automatically when connection is restored.",
+        "The classic 'Hello World' of sync. Create, complete and delete tasks while offline, open it in two tabs or two browsers, and watch everything converge when the connection returns.",
       icon: CheckCircle,
-      tags: ["React", "WASM", "IndexedDB"],
+      tags: ["JavaScript", "WASM", "IndexedDB"],
       status: "available",
       primaryButton: {
-        label: "Live Demo",
-        href: "#demo",
+        label: "Run It Locally",
+        href: "https://github.com/HarshalPatel1972/GoSync#try-the-demo",
         icon: ExternalLink,
+        external: true,
       },
       secondaryButton: {
         label: "View Source",
-        href: "https://github.com/HarshalPatel1972/GoSync",
+        href: "https://github.com/HarshalPatel1972/GoSync/tree/main/examples/todo",
         icon: Github,
         external: true,
       },
@@ -38,7 +39,7 @@ export default function ExampleShowcase() {
       id: "chat",
       title: "Live Team Messaging",
       description:
-        "A Slack-style chat app demonstrating high-speed WebSocket performance and timestamp-based message ordering.",
+        "A Slack-style chat app showing real-time delivery across devices and hybrid-logical-clock message ordering.",
       icon: MessageSquare,
       tags: ["Next.js", "Go", "WebSockets"],
       status: "coming-soon",
@@ -58,9 +59,9 @@ export default function ExampleShowcase() {
       id: "notes",
       title: "Secure Markdown Notes",
       description:
-        "Demonstrates 'Massive Storage' capabilities by syncing large text blobs and handling conflict resolution for concurrent edits.",
+        "Offline notes with large documents, collection-scoped sync, and per-field conflict resolution for concurrent edits.",
       icon: FileText,
-      tags: ["Markdown", "Encryption", "CRDT"],
+      tags: ["Markdown", "Offline", "Partial Sync"],
       status: "coming-soon",
       primaryButton: {
         label: "Coming Soon",

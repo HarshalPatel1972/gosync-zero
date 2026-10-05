@@ -15,6 +15,8 @@ const slugToFile = {
   "quick-start": "02-quick-start.mdx",
   "server-setup": "03-server-setup.mdx",
   "conflict-resolution": "04-conflict-resolution.mdx",
+  "api-reference": "05-api-reference.mdx",
+  production: "06-production.mdx",
 };
 
 // Get all doc slugs for static generation

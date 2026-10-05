@@ -11,33 +11,33 @@ const stages = [
   {
     id: "v1.0",
     version: "v1.0",
-    label: "The Foundation",
-    headline: "Core Engine",
-    body: "The immutable Merkle Tree foundation. Ensuring efficient delta-sync and zero data loss.",
-    status: "live",
-  },
-  {
-    id: "v1.1",
-    version: "v1.1",
-    label: "Developer Experience",
-    headline: "CLI Inspector",
-    body: "Debug your sync logic. A local terminal tool to watch the queue, inspect hashes, and replay failed packets.",
-    status: "in-progress",
-  },
-  {
-    id: "v1.2",
-    version: "v1.2",
-    label: "Advanced Logic",
-    headline: "Custom Resolvers",
-    body: "Programmatic conflict logic. Inject your own Go functions to merge complex data types beyond Last-Write-Wins.",
-    status: "planned",
+    label: "The Prototype",
+    headline: "Proof of Concept",
+    body: "Proved the idea: one Go codebase compiled to WebAssembly for the browser and a native server, syncing IndexedDB over WebSockets.",
+    status: "shipped",
   },
   {
     id: "v2.0",
     version: "v2.0",
-    label: "Production Scale",
-    headline: "Metrics Dashboard",
-    body: "Production observability. A self-hosted UI to track active connections, storage usage, and sync health.",
+    label: "Production Engine",
+    headline: "Built for Launch",
+    body: "Per-field conflict resolution on hybrid logical clocks, incremental cursor sync, JWT auth, multi-tab, PostgreSQL scale-out and Prometheus metrics. Measured at 1,000+ writes/s with p99 under 100 ms.",
+    status: "live",
+  },
+  {
+    id: "v2.x",
+    version: "v2.x",
+    label: "Developer Experience",
+    headline: "CLI Inspector",
+    body: "Debug your sync. A terminal tool to watch outboxes and cursors, inspect documents, and replay a device's sync. Plus first-class React hooks.",
+    status: "planned",
+  },
+  {
+    id: "v3.0",
+    version: "v3.0",
+    label: "Advanced Logic",
+    headline: "Custom Resolvers",
+    body: "Merge strategies beyond last-writer-wins: keep edit history, merge counters and sets, and CRDT text fields for Google-Docs-style collaboration.",
     status: "planned",
   },
 ];
@@ -125,7 +125,7 @@ function MerkleTreeSchematic() {
   };
 
   return (
-    <SchematicFrame title="Merkle Tree Status">
+    <SchematicFrame title="v1 Root-Hash Sync">
       <svg viewBox="0 0 320 240" className={styles.merkleSvg}>
         {/* Edges */}
         {edges.map(([from, to], i) => {
@@ -201,8 +201,8 @@ function TerminalSchematic() {
     { type: "command", text: "$ gosync inspect --watch" },
     { type: "output", text: "[INFO]  Starting inspector on port 9090..." },
     { type: "success", text: "[SYNC]  2 items received from server" },
-    { type: "output", text: "[HASH]  Root: 0x7f3a...c4b2" },
-    { type: "success", text: "[SYNC]  Delta applied: +3 nodes" },
+    { type: "output", text: "[PULL]  cursor 1759683000123 -> 3 changes" },
+    { type: "success", text: "[PUSH]  2 mutations acknowledged" },
     { type: "warning", text: "[QUEUE] 1 item pending retry" },
     { type: "success", text: "[SYNC]  Retry successful" },
     { type: "output", text: "[QUEUE] 0 pending | 847 synced" },
@@ -500,6 +500,7 @@ function DashboardSchematic() {
 // ============================================
 function StageCard({ stage }) {
   const statusConfig = {
+    shipped: { label: "Shipped", className: styles.statusLive },
     live: { label: "Live", className: styles.statusLive },
     "in-progress": { label: "In Progress", className: styles.statusInProgress },
     planned: { label: "Planned", className: styles.statusPlanned },
@@ -568,10 +569,10 @@ function ProgressDots({ activeStage }) {
 // ============================================
 function SchematicRenderer({ activeStage }) {
   const schematics = [
-    <MerkleTreeSchematic key="merkle" />,
-    <TerminalSchematic key="terminal" />,
-    <DiffSchematic key="diff" />,
-    <DashboardSchematic key="dashboard" />,
+    <MerkleTreeSchematic key="merkle" />, // v1.0 prototype (hash-based sync)
+    <DashboardSchematic key="dashboard" />, // v2.0 production engine
+    <TerminalSchematic key="terminal" />, // v2.x CLI inspector
+    <DiffSchematic key="diff" />, // v3.0 custom resolvers
   ];
 
   return (

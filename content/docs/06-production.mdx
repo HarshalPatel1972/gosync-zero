@@ -1,0 +1,50 @@
+---
+title: Production
+description: Deploying, scaling and monitoring GoSync
+---
+
+# Running in Production
+
+## Checklist
+
+- Serve over HTTPS so clients connect with `wss://`.
+- Configure real authentication (`GOSYNC_JWKS_URL` or `GOSYNC_JWT_SECRET`, plus issuer and audience). Make sure `GOSYNC_INSECURE_DEV_AUTH` is **not** set.
+- Set `GOSYNC_ALLOWED_ORIGINS` to your app's origins.
+- Use PostgreSQL for anything beyond a single small server.
+- Back up the database.
+- Serve the client's `gosync.wasm` compressed (about 0.8 MB with brotli). Hosts like Vercel and Netlify do this automatically.
+- Make sure your load balancer allows WebSockets, with an idle timeout above 60 seconds.
+
+## Scaling
+
+- **One server:** SQLite or PostgreSQL.
+- **Several servers:** PostgreSQL. Instances coordinate through PostgreSQL itself, so a user's phone and laptop can be connected to different servers and still sync in real time. No sticky sessions or extra infrastructure needed.
+
+## Measured performance
+
+| Setup | Devices | Writes/s | p50 | p99 |
+|---|---|---|---|---|
+| SQLite, one server | 2,000 | 1,048 | 2.8 ms | 92 ms |
+| PostgreSQL, two servers | 600 | 611 | 13 ms | 110 ms |
+
+Latency is the time from a write on one device until it's readable on that user's other devices.
+Every test delivered 100% of writes with zero errors, including past saturation, where the system
+slows down rather than losing data. The PostgreSQL scenario runs in CI on every change. You can
+reproduce these numbers with the included `gosync-loadtest` tool.
+
+## Monitoring
+
+Set `GOSYNC_METRICS_ADDR=127.0.0.1:9090` to expose Prometheus metrics: connected sessions, request
+latency, auth failures, rejected writes, errors. Use `/readyz` for load-balancer health checks.
+
+## Upgrades
+
+Run `gosync-server migrate` with the new version, then roll your servers one at a time. Devices
+reconnect automatically.
+
+## More
+
+The full [operations guide](https://github.com/HarshalPatel1972/GoSync/blob/main/docs/OPERATIONS.md)
+covers backups and restores, tombstone cleanup, capacity planning and every metric. The
+[protocol specification](https://github.com/HarshalPatel1972/GoSync/blob/main/PROTOCOL.md)
+describes exactly what goes over the wire.

@@ -85,9 +85,9 @@ export default function InteractiveDemo() {
       
       // Add initial logs after state is set
       setTimeout(() => {
-        addLog("system", "✅ WASM Engine Loaded");
+        addLog("system", "✅ Simulation ready (local IndexedDB)");
         addLog("system", "📦 IndexedDB Connected");
-        addLog("system", "🔌 WebSocket: ws://localhost:8080");
+        addLog("system", "🔌 Connected to simulated server");
         if (existing.length > 0) {
           addLog("sync", `📂 Restored ${existing.length} cached item(s)`);
         }
@@ -233,15 +233,24 @@ export default function InteractiveDemo() {
           viewport={{ once: true, margin: "-50px" }}
         >
           <motion.span className={styles.label} variants={itemVariants}>
-            🐕 Dogfooding Demo
+            Interactive Simulation
           </motion.span>
           <motion.h2 className={styles.title} variants={itemVariants}>
-            Real-Time Sync Inspector
+            See How Sync Works
           </motion.h2>
           <motion.p className={styles.description} variants={itemVariants}>
-            Watch data flow from Browser → Server in real-time.
+            A simulation of GoSync&apos;s sync flow, running entirely in your browser (no server involved).
             <br />
-            Toggle offline to see the queue build up.
+            Toggle offline to watch writes queue up, then sync.{" "}
+            <a
+              href="https://github.com/HarshalPatel1972/GoSync/tree/main/examples/todo"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: "inherit", textDecoration: "underline" }}
+            >
+              Run the real thing
+            </a>
+            .
           </motion.p>
         </motion.div>
 
@@ -287,7 +296,7 @@ export default function InteractiveDemo() {
                     <span className={styles.panelIcon}>🌐</span>
                     <div>
                       <strong>Your Browser</strong>
-                      <span className={styles.panelSubtitle}>IndexedDB + WASM</span>
+                      <span className={styles.panelSubtitle}>Local IndexedDB</span>
                     </div>
                   </div>
                   <div className={`${styles.statusBadge} ${styles.online}`}>
@@ -415,7 +424,7 @@ export default function InteractiveDemo() {
                     <span className={styles.panelIcon}>🖥️</span>
                     <div>
                       <strong>Server State</strong>
-                      <span className={styles.panelSubtitle}>Golang + SQLite</span>
+                      <span className={styles.panelSubtitle}>Simulated</span>
                     </div>
                   </div>
                   <div className={`${styles.statusBadge} ${isOnline ? styles.online : styles.offline}`}>

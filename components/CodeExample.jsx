@@ -9,24 +9,26 @@ export default function CodeExample() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [typedLines, setTypedLines] = useState(0);
 
-  const codeLines = [
-    { line: 1, content: 'package main', tokens: [{ type: 'keyword', text: 'package' }, { type: 'text', text: ' main' }] },
-    { line: 2, content: '', tokens: [] },
-    { line: 3, content: 'import "github.com/harshalpatel2868/gosync"', tokens: [{ type: 'keyword', text: 'import' }, { type: 'string', text: ' "github.com/harshalpatel2868/gosync"' }] },
-    { line: 4, content: '', tokens: [] },
-    { line: 5, content: 'type Task struct {', tokens: [{ type: 'keyword', text: 'type' }, { type: 'type', text: ' Task' }, { type: 'keyword', text: ' struct' }, { type: 'text', text: ' {' }] },
-    { line: 6, content: '    ID        string    `gosync:"pk"`', tokens: [{ type: 'text', text: '    ID        ' }, { type: 'type', text: 'string' }, { type: 'string', text: '    `gosync:"pk"`' }] },
-    { line: 7, content: '    Title     string', tokens: [{ type: 'text', text: '    Title     ' }, { type: 'type', text: 'string' }] },
-    { line: 8, content: '    Completed bool', tokens: [{ type: 'text', text: '    Completed ' }, { type: 'type', text: 'bool' }] },
-    { line: 9, content: '    UpdatedAt time.Time `gosync:"lww"`', tokens: [{ type: 'text', text: '    UpdatedAt ' }, { type: 'type', text: 'time.Time' }, { type: 'string', text: ' `gosync:"lww"`' }] },
-    { line: 10, content: '}', tokens: [{ type: 'text', text: '}' }] },
-    { line: 11, content: '', tokens: [] },
-    { line: 12, content: 'func main() {', tokens: [{ type: 'keyword', text: 'func' }, { type: 'function', text: ' main' }, { type: 'text', text: '() {' }] },
-    { line: 13, content: '    engine := gosync.New()', tokens: [{ type: 'text', text: '    engine := gosync.' }, { type: 'function', text: 'New' }, { type: 'text', text: '()' }] },
-    { line: 14, content: '    engine.Register(&Task{})', tokens: [{ type: 'text', text: '    engine.' }, { type: 'function', text: 'Register' }, { type: 'text', text: '(&Task{})' }] },
-    { line: 15, content: '    engine.Listen(":8080")  // That\'s it!', tokens: [{ type: 'text', text: '    engine.' }, { type: 'function', text: 'Listen' }, { type: 'string', text: '(":8080")' }, { type: 'comment', text: '  // That\'s it!' }] },
-    { line: 16, content: '}', tokens: [{ type: 'text', text: '}' }] },
+  // The real v2 client API (see /docs/api-reference). Keep this in sync
+  // with the published package.
+  const source = [
+    [["keyword", "import"], ["text", " { "], ["function", "createClient"], ["text", " } "], ["keyword", "from"], ["string", " '@harshalpatel2868/gosync-client'"], ["text", ";"]],
+    [],
+    [["keyword", "const"], ["text", " db = "], ["keyword", "await"], ["text", " "], ["function", "createClient"], ["text", "({"]],
+    [["text", "  url: "], ["string", "'wss://sync.example.com/sync'"], ["text", ","]],
+    [["text", "  "], ["function", "getToken"], ["text", ": () => auth."], ["function", "getIdToken"], ["text", "(),"]],
+    [["text", "});"]],
+    [],
+    [["comment", "// Saved locally first: works offline, syncs when online"]],
+    [["keyword", "await"], ["text", " db."], ["function", "set"], ["text", "("], ["string", "'todos'"], ["text", ", id, { title: "], ["string", "'Ship it'"], ["text", ", done: "], ["keyword", "false"], ["text", " });"]],
+    [],
+    [["comment", "// Live across tabs and devices; conflicts merge automatically"]],
+    [["text", "db."], ["function", "watch"], ["text", "("], ["string", "'todos'"], ["text", ", (todos) => "], ["function", "render"], ["text", "(todos));"]],
   ];
+  const codeLines = source.map((tokens, i) => ({
+    line: i + 1,
+    tokens: tokens.map(([type, text]) => ({ type, text })),
+  }));
 
   useEffect(() => {
     if (isInView && typedLines < codeLines.length) {
@@ -67,10 +69,10 @@ export default function CodeExample() {
             Developer Experience
           </motion.span>
           <motion.h2 className={styles.title} variants={itemVariants}>
-            It&apos;s Just Go. That&apos;s It.
+            A Few Lines. That&apos;s It.
           </motion.h2>
           <motion.p className={styles.description} variants={itemVariants}>
-            No DSLs. No config files. No magic syntax. Define your models, register them, and you&apos;re syncing.
+            No schemas to declare and no sync code to write. Read and write a local database; GoSync handles offline, real-time and conflicts.
           </motion.p>
         </motion.div>
 
@@ -86,7 +88,7 @@ export default function CodeExample() {
               <span className={`${styles.dot} ${styles.yellow}`} />
               <span className={`${styles.dot} ${styles.green}`} />
             </div>
-            <span className={styles.fileName}>sync.go</span>
+            <span className={styles.fileName}>app.js</span>
             <div className={styles.spacer} />
           </motion.div>
           <motion.div className={styles.codeContent} variants={itemVariants}>
