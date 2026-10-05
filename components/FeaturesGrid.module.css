@@ -76,9 +76,8 @@
 }
 
 .card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(0, 230, 153, 0.2);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  border-color: rgba(0, 230, 153, 0.35);
+  box-shadow: 0 0 0 4px rgba(0, 230, 153, 0.06), 0 0 40px -12px rgba(0, 230, 153, 0.3);
 }
 
 .card:hover::before {

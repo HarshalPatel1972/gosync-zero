@@ -16,14 +16,14 @@ export function clockLabel(t) {
   return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
 }
 
-// Signal strength (0 to 4 bars) through the day: full 4G in town, nothing in
-// the villages, a few seconds of 2G at a bus stop.
+// Signal strength (0 to 4 bars) through the day: full 5G in town, 4G on the
+// way out, nothing in the villages, one bar of 4G at a bus stop.
 const SIGNAL = [
   { from: at(7, 0), to: at(8, 10), bars: 4 },
   { from: at(8, 10), to: at(8, 20), bars: 3 },
   { from: at(8, 20), to: at(8, 30), bars: 1 },
   { from: at(8, 30), to: at(11, 38), bars: 0 },
-  { from: at(11, 38), to: at(11, 44), bars: 1 }, // bus stop
+  { from: at(11, 38), to: at(11, 44), bars: 1 }, // bus stop: one bar of 4G
   { from: at(11, 44), to: at(14, 40), bars: 0 },
   { from: at(14, 40), to: at(14, 50), bars: 2 }, // a ridge above the river village
   { from: at(14, 50), to: at(18, 20), bars: 0 },
@@ -36,6 +36,12 @@ export const SIGNAL_SEGMENTS = SIGNAL;
 export function signalAt(t) {
   const seg = SIGNAL.find((s) => t >= s.from && t < s.to);
   return seg ? seg.bars : 4;
+}
+
+// Full bars mean town 5G; anything less is 4G.
+export function networkAt(t) {
+  const bars = signalAt(t);
+  return bars === 0 ? null : bars >= 4 ? "5G" : "4G";
 }
 
 // Earliest moment at or after t when there is any signal: when a write made at
@@ -85,15 +91,40 @@ export const CONFLICT = {
   mergedAt: nextConnection(at(13, 20)),
 };
 
-// The app is closed (battery 3%) and reopened later.
+// The app is closed (battery 3%) and reopened later, on a power bank.
 export const APP_CLOSED = { from: at(16, 30), to: at(17, 10) };
+
+// Battery: 96% at 07:00, draining to exactly 3% when the app is closed.
+// Phones drain faster while hunting for a signal, so dead zones cost more.
+// From 17:10 a power bank charges it.
+const BATTERY_START = 96;
+const BATTERY_LOW = 3;
+const SEARCHING_COST = 1.7; // drain per minute with no signal, relative to 1
+const CHARGE_PER_MINUTE = 0.5;
+
+const drainSoFar = [0];
+for (let m = 0; m < DAY_END; m++) {
+  drainSoFar.push(drainSoFar[m] + (signalAt(m) === 0 ? SEARCHING_COST : 1));
+}
+
+export function batteryAt(t) {
+  const m = Math.max(0, Math.min(Math.round(t), DAY_END));
+  if (m <= APP_CLOSED.from) {
+    const used = drainSoFar[m] / drainSoFar[APP_CLOSED.from];
+    return Math.round(BATTERY_START - (BATTERY_START - BATTERY_LOW) * used);
+  }
+  if (m < APP_CLOSED.to) return BATTERY_LOW;
+  return Math.min(100, Math.round(BATTERY_LOW + (m - APP_CLOSED.to) * CHARGE_PER_MINUTE));
+}
+
+export const isCharging = (t) => t >= APP_CLOSED.to;
 
 // Story beats: the caption shown for each stretch of the day.
 export const BEATS = [
   {
     at: at(7, 40),
     title: "07:40 · Leaving town",
-    body: "Amara is a community health worker. Today: 23 household visits across two villages, most of them with no signal at all. Her app loads once, here, on town 4G.",
+    body: "Amara is a community health worker. Today: 23 household visits across two villages, most of them with no signal at all. Her app loads once, here, on town 5G.",
   },
   {
     at: at(9, 15),
@@ -103,7 +134,7 @@ export const BEATS = [
   },
   {
     at: at(11, 38),
-    title: "Bus stop · 2G for six minutes",
+    title: "Bus stop · one bar, six minutes",
     body: "Enough. Only the 8 new visits travel, a few kilobytes, and the regional office sees them before the bus leaves.",
     usually: "A full re-upload that times out, or duplicates when the retry fires twice.",
   },
@@ -148,6 +179,9 @@ export function stateAt(t) {
   return {
     clock: clockLabel(t),
     bars,
+    network: networkAt(t),
+    battery: batteryAt(t),
+    charging: isCharging(t),
     online: bars > 0,
     appOpen,
     recorded,

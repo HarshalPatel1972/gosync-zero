@@ -27,6 +27,19 @@ function SignalBars({ bars }) {
   );
 }
 
+function Battery({ level, charging }) {
+  const low = level <= 15 && !charging;
+  return (
+    <span className={`${styles.battery} ${low ? styles.batteryLow : ""}`} aria-label={`Battery ${level}%${charging ? ", charging" : ""}`}>
+      {charging && <span className={styles.bolt} aria-hidden="true">⚡</span>}
+      {level}%
+      <span className={styles.cell} aria-hidden="true">
+        <i style={{ width: `${level}%` }} />
+      </span>
+    </span>
+  );
+}
+
 // The day as a skyline: bar height is signal strength, gaps are dead zones.
 function Skyline({ t }) {
   const width = DAY_END;
@@ -119,8 +132,8 @@ function Phone({ s, t }) {
       <div className={styles.statusBar}>
         <span>{s.clock}</span>
         <span className={styles.statusRight}>
-          {s.online ? (s.bars >= 3 ? "4G" : "2G") : ""} <SignalBars bars={s.bars} />
-          <span className={styles.battery}>{t >= APP_CLOSED.from - 10 && t < APP_CLOSED.to + 30 ? "3%" : "61%"}</span>
+          {s.network ?? ""} <SignalBars bars={s.bars} />
+          <Battery level={s.battery} charging={s.charging} />
         </span>
       </div>
       {s.appOpen ? (
@@ -133,7 +146,7 @@ function Phone({ s, t }) {
             <span className={`${styles.pill} ${status.cls}`}>{status.label}</span>
             {s.outbox > 0 && <span className={styles.outbox}>{s.outbox} waiting</span>}
           </div>
-          {justReopened && <div className={styles.toast}>Reopened · {s.outbox} visits still waiting</div>}
+          {justReopened && <div className={styles.toast}>Reopened on a power bank · {s.outbox} visits still waiting</div>}
           {showConflict && <ConflictCard s={s} side="phone" />}
           <ul className={styles.visits}>
             {latest.length === 0 ? (
