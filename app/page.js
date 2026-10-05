@@ -1,8 +1,8 @@
 import Navigation from "@/components/Navigation";
 import Hero from "@/components/Hero";
-import ProblemSection from "@/components/ProblemSection";
-import SolutionSection from "@/components/SolutionSection";
-import InteractiveDemo from "@/components/InteractiveDemo";
+import DayInTheField from "@/components/story/DayInTheField";
+import Switchboard from "@/components/fit/Switchboard";
+import StackCompare from "@/components/compare/StackCompare";
 import FeaturesGrid from "@/components/FeaturesGrid";
 import CodeExample from "@/components/CodeExample";
 import Blueprints from "@/components/Blueprints";
@@ -19,11 +19,11 @@ export default function Home() {
       <Navigation />
       <main>
         <Hero />
-        <ProblemSection />
-        <SolutionSection />
-        <InteractiveDemo />
-        <FeaturesGrid />
+        <DayInTheField />
+        <Switchboard />
+        <StackCompare />
         <CodeExample />
+        <FeaturesGrid />
         <Blueprints />
         <RoadmapEvolution />
       </main>

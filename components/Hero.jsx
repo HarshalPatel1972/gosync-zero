@@ -62,7 +62,7 @@ export default function Hero() {
 
         {/* Tagline */}
         <motion.p className={styles.tagline} variants={itemVariants}>
-          In an async world.
+          For web apps that have to work <span className={styles.taglineAccent}>where the internet doesn&apos;t</span>.
         </motion.p>
 
         {/* Product Name */}
@@ -81,9 +81,7 @@ export default function Hero() {
 
         {/* Subtitle */}
         <motion.p className={styles.subtitle} variants={itemVariants}>
-          Offline-first, real-time sync for web apps. Self-hosted, written in Go.
-          <br />
-          Works offline. Syncs every device and tab. Resolves conflicts automatically. No vendor lock-in.
+          Offline writes, real-time across devices, conflicts merged for you. One small Go binary on servers you control.
         </motion.p>
 
         {/* CTA Buttons */}
