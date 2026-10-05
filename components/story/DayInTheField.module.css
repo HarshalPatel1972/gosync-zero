@@ -263,7 +263,53 @@
 }
 
 .battery {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+
+.cell {
+  position: relative;
+  width: 20px;
+  height: 10px;
+  padding: 1.5px;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+}
+
+.cell::after {
+  /* the battery terminal */
+  content: "";
+  position: absolute;
+  right: -3.5px;
+  top: 2.5px;
+  width: 2px;
+  height: 3px;
+  border-radius: 0 1px 1px 0;
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.cell i {
+  display: block;
+  height: 100%;
+  border-radius: 1px;
+  background: var(--text-primary);
+  transition: width var(--duration-slow) var(--ease-out);
+}
+
+.batteryLow {
+  color: var(--client-magenta);
+}
+
+.batteryLow .cell i {
+  background: var(--client-magenta);
+}
+
+.bolt {
+  color: var(--sync-green);
+  font-size: 9px;
 }
 
 .app {
