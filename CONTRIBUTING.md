@@ -1,6 +1,8 @@
-# Contributing to GoSync
+# Contributing to the GoSync website
 
-First off, thank you for considering contributing to GoSync! 🎉
+First off, thank you for considering contributing! 🎉
+
+This repository is the **GoSync website and documentation**. Bugs or features in the sync engine, server or npm package belong in the main repository: [HarshalPatel1972/GoSync](https://github.com/HarshalPatel1972/GoSync).
 
 It's people like you that make GoSync such a great tool for the developer community.
 
@@ -41,11 +43,11 @@ This project and everyone participating in it is governed by our commitment to p
 # 1. Fork the repository on GitHub
 
 # 2. Clone your fork
-git clone https://github.com/YOUR_USERNAME/GoSync.git
-cd GoSync
+git clone https://github.com/YOUR_USERNAME/GoSync-zero.git
+cd GoSync-zero
 
 # 3. Add upstream remote
-git remote add upstream https://github.com/HarshalPatel1972/GoSync.git
+git remote add upstream https://github.com/HarshalPatel1972/GoSync-zero.git
 
 # 4. Install dependencies
 npm install
@@ -102,7 +104,7 @@ Ready to code? Here's how:
 ### Project Structure
 
 ```
-GoSync/
+GoSync-zero/
 ├── app/                    # Next.js App Router pages
 │   ├── docs/              # Documentation pages
 │   └── page.js            # Landing page

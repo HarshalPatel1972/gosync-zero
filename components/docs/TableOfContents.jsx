@@ -1,25 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import styles from "./TableOfContents.module.css";
 
 export default function TableOfContents({ content }) {
-  const [headings, setHeadings] = useState([]);
   const [activeId, setActiveId] = useState("");
 
-  useEffect(() => {
-    // Parse headings from content
+  // Headings come straight from the MDX source, so derive them during render.
+  const headings = useMemo(() => {
     const regex = /^##\s+(.+)$/gm;
     const matches = [];
     let match;
-    
     while ((match = regex.exec(content)) !== null) {
       const text = match[1];
       const id = text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
       matches.push({ text, id, level: 2 });
     }
-    
-    setHeadings(matches);
+    return matches;
   }, [content]);
 
   useEffect(() => {

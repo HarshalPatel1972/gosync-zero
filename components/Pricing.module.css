@@ -73,6 +73,11 @@
   align-items: start;
 }
 
+.grid.single {
+  grid-template-columns: minmax(0, 420px);
+  justify-content: center;
+}
+
 /* Card */
 .card {
   position: relative;

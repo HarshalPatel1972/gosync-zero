@@ -1,0 +1,117 @@
+---
+title: API Reference
+description: Every option and method of the GoSync browser client
+---
+
+# API Reference
+
+```bash
+npm install @harshalpatel2868/gosync-client
+```
+
+TypeScript types are included.
+
+## createClient(options)
+
+Opens a local database and starts syncing it. Returns a promise for a client.
+
+```javascript
+import { createClient } from '@harshalpatel2868/gosync-client';
+
+const db = await createClient({
+  url: 'wss://sync.example.com/sync',
+  getToken: () => auth.getIdToken(),
+  dbName: `app-${user.id}`,
+});
+```
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `url` | `string` | **Required.** The server's sync endpoint (`wss://…/sync`). |
+| `getToken` | `() => string \| Promise<string>` | Returns the auth token. Called on every (re)connect, so return a fresh one. |
+| `token` | `string` | A static token, if you don't need refresh. |
+| `dbName` | `string` | IndexedDB database name. Use one per signed-in user. Default `"gosync"`. |
+| `collections` | `string[]` | Only download these collections (default: all). Writes to any collection are still uploaded. |
+| `wasmUrl` | `string \| URL` | Where to load `gosync.wasm` from. Default: next to the package's JS. |
+| `debug` | `boolean` | Log sync activity to the console. |
+
+## Writing
+
+### set(collection, id, fields)
+
+Creates or updates a document. Only the fields you pass change; set a field to `null` to clear
+it. Resolves once the write is saved locally. It syncs in the background, including when offline.
+
+```javascript
+await db.set('todos', 't1', { title: 'Buy milk', done: false });
+await db.set('todos', 't1', { done: true }); // title is kept
+```
+
+Collection names use letters, digits, `_`, `-` and `.`. Field names can't be `id` or start with
+`_`. Limits: 64 KiB per field value, 256 KiB per write.
+
+### delete(collection, id)
+
+Deletes a document. A later `set` revives it.
+
+## Reading
+
+Reads come from the local database: instant, and they work offline.
+
+### get(collection, id)
+
+Returns `{ id, ...fields }`, or `null` if the document doesn't exist or was deleted.
+
+### list(collection)
+
+Returns all documents in a collection as `[{ id, ...fields }]`.
+
+## Reacting to changes
+
+### watch(collection, callback)
+
+Calls `callback(docs)` immediately and again after every change to the collection: local, from
+another tab, or from the server. Returns an unsubscribe function.
+
+```javascript
+const stop = db.watch('todos', (todos) => render(todos));
+// later
+stop();
+```
+
+### subscribe([collection,] callback)
+
+Low-level change events: `callback({ collection, ids })`. Omit `collection` to receive every
+collection's changes. Returns an unsubscribe function.
+
+### onStatus(callback)
+
+Connection status: `'offline'`, `'connecting'` or `'online'`. Called immediately with the
+current status. Every tab sees the status of the tab that holds the connection.
+
+### onError(callback)
+
+Errors reported by the server, such as an expired token or a rejected write. Rejected writes are
+undone locally before you're notified.
+
+## Properties
+
+| Property | Description |
+|----------|-------------|
+| `status` | Current connection status |
+| `isLeader` | `true` in the one tab that holds the server connection |
+| `clientId` | This device's stable ID |
+
+## close()
+
+Stops syncing and releases the database. Call it when the user signs out.
+
+## Multiple tabs
+
+You don't need to do anything. All tabs using the same `dbName` share one local database; one of
+them (elected automatically) talks to the server, and the others see every change instantly. If
+that tab closes, another takes over.
+
+---
+
+**Next:** [Running in production →](/docs/production)

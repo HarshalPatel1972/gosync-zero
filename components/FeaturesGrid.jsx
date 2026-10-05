@@ -22,21 +22,21 @@ export default function FeaturesGrid() {
       id: "bandwidth",
       title: "Bandwidth Efficient",
       description:
-        "Compare Merkle roots first. If they match, zero data sent. If not, drill down to only the changed items.",
+        "Each device downloads only what changed since its last sync and uploads only its own pending writes. Batched, compressed and safe to retry.",
       Icon: Minimize2,
     },
     {
       id: "deadlock",
-      title: "Deadlock-Free",
+      title: "Conflict-Free Merging",
       description:
-        "Custom non-blocking I/O prevents the WASM runtime from freezing your browser during heavy sync operations.",
+        "Every field is merged independently on a hybrid logical clock. Concurrent edits to different fields both survive, and every device converges.",
       Icon: Zap,
     },
     {
       id: "typesafe",
-      title: "Type-Safe",
+      title: "Secure by Default",
       description:
-        "End-to-end type safety from database to browser. No more 'any' casting. Go structs define the contract everywhere.",
+        "JWT auth with your own secret or any JWKS provider (Auth0, Clerk, Supabase, Firebase). Every user's data is isolated on the server.",
       Icon: ShieldCheck,
     },
     {
@@ -48,7 +48,7 @@ export default function FeaturesGrid() {
     },
     {
       id: "dependencies",
-      title: "Zero Dependencies",
+      title: "Single Binary",
       description:
         "The server compiles to a single, static binary. No JVM, no Python runtime, no complex environment setup required.",
       Icon: Box,

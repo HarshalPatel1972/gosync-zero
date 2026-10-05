@@ -11,6 +11,8 @@ const navItems = [
   { slug: "quick-start", title: "Quick Start", icon: "⚡" },
   { slug: "server-setup", title: "Server Setup", icon: "🖥️" },
   { slug: "conflict-resolution", title: "Conflict Resolution", icon: "⚔️" },
+  { slug: "api-reference", title: "API Reference", icon: "📚" },
+  { slug: "production", title: "Production", icon: "🚀" },
 ];
 
 export default function DocsSidebar() {
@@ -125,8 +127,7 @@ export default function DocsSidebar() {
 
         <div className={styles.sidebarFooter}>
           <div className={styles.versionBadge}>
-            <span>v0.1.0</span>
-            <span className={styles.betaTag}>Beta</span>
+            <span>v2.0.0</span>
           </div>
         </div>
       </motion.aside>

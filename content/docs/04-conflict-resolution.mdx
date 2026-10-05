@@ -1,68 +1,77 @@
 ---
 title: Conflict Resolution
-description: How GoSync handles concurrent edits from multiple users
+description: How GoSync merges concurrent edits from many devices
 ---
 
 # Conflict Resolution
 
-Distributed systems are messy. Two users might edit the same document while offline. How do we decide who wins?
+Two people edit the same task while offline. One marks it done, the other renames it. When they
+reconnect, what happens?
 
-## Last-Write-Wins (LWW)
+## Per-field last-writer-wins
 
-GoSync currently uses a **Last-Write-Wins** strategy based on high-precision timestamps.
+GoSync treats **every field of every document** as its own small register that remembers its value
+and when it was written. When two versions meet, each field keeps its newest value
+independently. You don't need `updated_at` fields; GoSync tracks this for you.
 
-### How It Works
+| | `title` | `done` |
+|---|---|---|
+| Original | "Draft report" | `false` |
+| Device A (offline) | "Final report" | |
+| Device B (offline) | | `true` |
+| **After sync (everywhere)** | **"Final report"** | **`true`** |
 
-1. **User A** changes Title to "Draft" at `10:00:01.000`
-2. **User B** changes Title to "Final" at `10:00:05.000`
-3. **Result:** "Final" wins. User A's edit is overwritten.
+Both edits survive, because they touched different fields. Only when two devices change the
+**same field** does one value win: the later one.
+
+## What "later" means: hybrid logical clocks
+
+Device clocks are unreliable. Phones drift, and laptops can be minutes off. GoSync orders writes with
+a **hybrid logical clock (HLC)**, which combines wall-clock time with a counter:
+
+- It never goes backwards, even if the device's clock does.
+- A device that has *seen* a change always orders its next write after it. If you read the
+  title another device just set and then edit it, your edit wins, even if your clock is behind.
+- Each device estimates the server's time when it connects, to correct for clock skew.
+- The server rejects writes stamped more than 5 minutes in its future, so a device with a wrong
+  clock can't win every conflict.
+- Ties are impossible: every timestamp includes a unique device ID.
+
+## Guarantees
+
+- **Convergence:** every device and the server end up with exactly the same data, regardless of
+  the order changes arrive in, duplicates or retries.
+- **No lost offline work:** writes made offline are kept in a local outbox (which survives
+  restarts) until the server confirms them.
+- **Deletes are writes too:** a delete wins over older edits, and a later `set` revives the document.
+- **Long offline periods are safe:** deleted documents are eventually cleaned up on the server.
+  A device that was offline the whole time still learns about the delete, and its stale edits
+  can't bring the document back.
+
+## Reacting to changes
+
+`watch` and `subscribe` fire for local edits, edits from other tabs, and edits merged in from the
+server, so your UI always shows the merged result:
 
 ```javascript
-// Both versions arrive at the server
-const versionA = { title: "Draft", updated_at: "2024-01-01T10:00:01.000Z" };
-const versionB = { title: "Final", updated_at: "2024-01-01T10:00:05.000Z" };
-
-// GoSync compares timestamps
-// versionB.updated_at > versionA.updated_at
-// Winner: versionB
-```
-
-## Why LWW?
-
-- **Simplicity:** It requires zero configuration from you.
-- **Predictability:** The latest action is usually the "correct" one for most CRUD apps (To-Do lists, Settings, Inventory).
-- **Performance:** No complex merge algorithms needed.
-
-## Handling Conflicts in Your App
-
-While GoSync handles the technical merge, you might want to notify users when their changes were overwritten.
-
-```javascript
-GoSync.onConflict('todos', (local, remote, winner) => {
-  if (winner === 'remote') {
-    toast.warn('Your changes were overwritten by a newer version');
-  }
+db.subscribe('todos', ({ ids }) => {
+  console.log('changed:', ids);
 });
 ```
 
-## Timestamp Precision
-
-GoSync uses **millisecond-precision ISO 8601 timestamps**. Make sure your client always includes the `updated_at` field:
+If the server rejects a write (for example, a [permission rule](/docs/server-setup#permissions-and-validation)),
+the device undoes it locally and you're told:
 
 ```javascript
-const item = {
-  id: 'uuid-1234',
-  title: 'My Task',
-  updated_at: new Date().toISOString() // "2024-01-01T10:00:01.123Z"
-};
+db.onError((err) => toast.error(err.message));
 ```
 
-> **Tip:** If two changes have the exact same timestamp (extremely rare), the server breaks the tie using the item's `id` alphabetically.
+## When last-writer-wins isn't enough
 
-## Future Roadmap
-
-> **Coming Soon:** We are researching **CRDTs (Conflict-free Replicated Data Types)** for future versions to support collaborative text editing (Google Docs style).
+Per-field LWW is ideal for records: tasks, settings, inventory, forms, CRM entries. It isn't designed
+for two people typing in the *same paragraph* at the same time, where one person's text would
+win. For collaborative text editing, use a text CRDT such as [Yjs](https://yjs.dev) for that field.
 
 ---
 
-**← Back to [Introduction](/docs/introduction)**
+**Next:** [API reference →](/docs/api-reference)

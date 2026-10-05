@@ -2,7 +2,7 @@ import DocsSidebar from "@/components/docs/DocsSidebar";
 import styles from "./layout.module.css";
 
 export const metadata = {
-  title: "Documentation | GoSync",
+  title: { default: "Documentation", template: "%s | GoSync Docs" },
   description: "Learn how to build offline-first applications with GoSync",
 };
 

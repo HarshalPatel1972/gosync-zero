@@ -15,6 +15,8 @@ const slugToFile = {
   "quick-start": "02-quick-start.mdx",
   "server-setup": "03-server-setup.mdx",
   "conflict-resolution": "04-conflict-resolution.mdx",
+  "api-reference": "05-api-reference.mdx",
+  production: "06-production.mdx",
 };
 
 // Get all doc slugs for static generation
@@ -32,7 +34,7 @@ export async function generateMetadata({ params }) {
   const fileName = slugToFile[slug];
 
   if (!fileName) {
-    return { title: "Not Found | GoSync Docs" };
+    return { title: "Not Found" };
   }
 
   const filePath = path.join(process.cwd(), "content/docs", fileName);
@@ -41,12 +43,17 @@ export async function generateMetadata({ params }) {
     const fileContent = fs.readFileSync(filePath, "utf8");
     const { data } = matter(fileContent);
     
+    const url = `/docs/${slug}`;
     return {
-      title: `${data.title} | GoSync Docs`,
+      title: data.title,
       description: data.description,
+      alternates: { canonical: url },
+      // Child openGraph/twitter objects replace the parent's, so repeat the image.
+      openGraph: { title: `${data.title} | GoSync Docs`, description: data.description, url, siteName: "GoSync", type: "article", images: ["/og-image.jpg"] },
+      twitter: { card: "summary_large_image", title: `${data.title} | GoSync Docs`, description: data.description, images: ["/og-image.jpg"] },
     };
   } catch {
-    return { title: "Documentation | GoSync" };
+    return { title: "Documentation" };
   }
 }
 

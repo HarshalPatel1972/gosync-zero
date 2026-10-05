@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import styles from "./Navigation.module.css";
@@ -35,7 +36,7 @@ export default function Navigation() {
       >
         <div className={styles.container}>
           {/* Logo */}
-          <a href="#" className={styles.logo}>
+          <Link href="/" className={styles.logo}>
             <svg
               className={styles.logoIcon}
               width="32"
@@ -72,7 +73,7 @@ export default function Navigation() {
               />
             </svg>
             <span className={styles.logoText}>GoSync</span>
-          </a>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className={styles.navLinks}>

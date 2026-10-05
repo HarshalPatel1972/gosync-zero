@@ -19,32 +19,46 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
+const siteTitle = "GoSync: offline-first, real-time sync for web apps";
+const siteDescription =
+  "Self-hosted, open-source sync engine written in Go. Your web app works offline, syncs across every device and tab in real time, and resolves conflicts automatically.";
+
 export const metadata = {
-  title: "GoSync - In an async world. GoSync.",
-  description:
-    "Write your sync logic once in Go. Deploy to server and browser. Offline-first with automatic conflict resolution, zero vendor lock-in.",
+  metadataBase: new URL("https://gosync-zero.vercel.app"),
+  title: {
+    default: siteTitle,
+    template: "%s | GoSync",
+  },
+  description: siteDescription,
   keywords: [
-    "sync",
+    "offline-first",
+    "local-first",
+    "sync engine",
+    "real-time sync",
+    "indexeddb",
+    "websocket",
+    "crdt",
+    "conflict resolution",
+    "self-hosted",
     "golang",
     "webassembly",
-    "wasm",
-    "offline-first",
-    "real-time",
-    "distributed",
+    "firebase alternative",
   ],
-  authors: [{ name: "GoSync" }],
+  authors: [{ name: "Harshal Patel", url: "https://github.com/HarshalPatel1972" }],
   openGraph: {
-    title: "GoSync - In an async world. GoSync.",
-    description:
-      "Write your sync logic once in Go. Deploy to server and browser. Offline-first with automatic conflict resolution, zero vendor lock-in.",
+    title: siteTitle,
+    description: siteDescription,
+    url: "/",
+    siteName: "GoSync",
     type: "website",
     locale: "en_US",
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "GoSync: offline-first, real-time sync for web apps" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "GoSync - In an async world. GoSync.",
-    description:
-      "Write your sync logic once in Go. Deploy to server and browser. Offline-first with automatic conflict resolution, zero vendor lock-in.",
+    title: siteTitle,
+    description: siteDescription,
+    images: ["/og-image.jpg"],
   },
   robots: {
     index: true,

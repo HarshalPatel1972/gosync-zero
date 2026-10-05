@@ -38,11 +38,11 @@ export default function ProblemSection() {
             The Problem
           </motion.span>
           <motion.h2 className={styles.title} variants={itemVariants}>
-            You&apos;re Writing Everything Twice.
+            Offline Sync Is a Trap.
           </motion.h2>
           <motion.p className={styles.description} variants={itemVariants}>
-            Every sync solution forces you to duplicate business logic. Validation in JavaScript for the frontend. The same validation again in Python, Node, or Go for the backend. When they inevitably drift apart?{" "}
-            <span className={styles.highlight}>Bugs. Data corruption. Angry users.</span>
+            Making an app work offline sounds simple: cache the data, queue the writes, retry later. Then come two tabs, two devices, flaky networks, skewed clocks and edits that collide. Hand-rolled sync breaks in exactly the moments users care about.{" "}
+            <span className={styles.highlight}>Lost edits. Duplicates. Data that never matches.</span>
           </motion.p>
         </motion.div>
 
@@ -58,42 +58,39 @@ export default function ProblemSection() {
             variants={itemVariants}
           >
             <div className={styles.cardHeader}>
-              <span className={styles.cardBadge}>❌ THE OLD WAY</span>
+              <span className={styles.cardBadge}>❌ THE HAND-ROLLED WAY</span>
             </div>
             <div className={styles.codeBlocks}>
               <div className={styles.codeBlock}>
                 <div className={styles.codeLabel}>
                   <span className={styles.fileIcon}>📄</span>
-                  Frontend (JavaScript)
+                  offline-queue.js
                 </div>
                 <pre className={styles.code}>
                   <code>
-                    <span className={styles.keyword}>function</span>{" "}
-                    <span className={styles.function}>validateTask</span>(task) {"{"}{"\n"}
-                    {"  "}<span className={styles.keyword}>if</span> (!task.title) {"{"}{"\n"}
-                    {"    "}<span className={styles.keyword}>throw</span> <span className={styles.string}>&quot;Title required&quot;</span>;{"\n"}
-                    {"  }"}{"\n"}
-                    {"  "}<span className={styles.comment}>// 50 more lines...</span>{"\n"}
+                    <span className={styles.keyword}>async function</span>{" "}
+                    <span className={styles.function}>save</span>(task) {"{"}{"\n"}
+                    {"  "}cache.<span className={styles.function}>put</span>(task); queue.<span className={styles.function}>push</span>(task);{"\n"}
+                    {"  "}<span className={styles.keyword}>try</span> {"{"} <span className={styles.keyword}>await</span> <span className={styles.function}>fetch</span>(<span className={styles.string}>&quot;/api/tasks&quot;</span>, ...) {"}"}{"\n"}
+                    {"  "}<span className={styles.keyword}>catch</span> {"{"} <span className={styles.function}>retryLater</span>() {"}"} <span className={styles.comment}>{"// twice? out of order?"}</span>{"\n"}
                     {"}"}
                   </code>
                 </pre>
               </div>
               <div className={styles.separator}>
                 <span className={styles.separatorIcon}>⚠️</span>
-                <span>Duplicated!</span>
+                <span>Then the edge cases</span>
               </div>
               <div className={styles.codeBlock}>
                 <div className={styles.codeLabel}>
                   <span className={styles.fileIcon}>📄</span>
-                  Backend (Python)
+                  merge.js
                 </div>
                 <pre className={styles.code}>
                   <code>
-                    <span className={styles.keyword}>def</span>{" "}
-                    <span className={styles.function}>validate_task</span>(task):{"\n"}
-                    {"  "}<span className={styles.keyword}>if not</span> task.title:{"\n"}
-                    {"    "}<span className={styles.keyword}>raise</span> <span className={styles.string}>&quot;Title required&quot;</span>{"\n"}
-                    {"  "}<span className={styles.comment}># 50 more lines...</span>
+                    <span className={styles.keyword}>if</span> (remote.updatedAt {">"} local.updatedAt) local = remote;{"\n"}
+                    <span className={styles.comment}>{"// wrong clock? both edited different fields?"}</span>{"\n"}
+                    <span className={styles.comment}>{"// another tab? a delete while offline? ..."}</span>
                   </code>
                 </pre>
               </div>
@@ -124,30 +121,28 @@ export default function ProblemSection() {
             <div className={styles.codeBlocks}>
               <div className={styles.codeBlock}>
                 <div className={styles.codeLabel}>
-                  <span className={styles.fileIcon}>🧠</span>
-                  Shared Brain (Go)
+                  <span className={styles.fileIcon}>⚡</span>
+                  app.js
                 </div>
                 <pre className={styles.code}>
                   <code>
-                    <span className={styles.keyword}>func</span>{" "}
-                    <span className={styles.function}>ValidateTask</span>(t <span className={styles.type}>*Task</span>) <span className={styles.type}>error</span> {"{"}{"\n"}
-                    {"  "}<span className={styles.keyword}>if</span> t.Title == <span className={styles.string}>&quot;&quot;</span> {"{"}{"\n"}
-                    {"    "}<span className={styles.keyword}>return</span> errors.New(<span className={styles.string}>&quot;required&quot;</span>){"\n"}
-                    {"  }"}{"\n"}
-                    {"  "}<span className={styles.comment}>// Write once, run everywhere</span>{"\n"}
-                    {"}"}
+                    <span className={styles.keyword}>await</span> db.<span className={styles.function}>set</span>(<span className={styles.string}>&quot;tasks&quot;</span>, id, task);{"\n"}
+                    db.<span className={styles.function}>watch</span>(<span className={styles.string}>&quot;tasks&quot;</span>, render);{"\n"}
+                    {"\n"}
+                    <span className={styles.comment}>{"// Offline queue, retries, real-time updates,"}</span>{"\n"}
+                    <span className={styles.comment}>{"// conflicts, clocks and tabs: handled."}</span>
                   </code>
                 </pre>
               </div>
               <div className={styles.deployTargets}>
                 <div className={styles.deployTarget}>
                   <div className={styles.deployIcon}>🌐</div>
-                  <span>Browser (WASM)</span>
+                  <span>Every Browser &amp; Tab</span>
                 </div>
                 <div className={styles.deployLine} />
                 <div className={styles.deployTarget}>
                   <div className={styles.deployIcon}>🖥️</div>
-                  <span>Server (Native)</span>
+                  <span>Your Go Server</span>
                 </div>
               </div>
             </div>
