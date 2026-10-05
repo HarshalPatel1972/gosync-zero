@@ -13,11 +13,19 @@ Download the server for your platform from the
 [latest release](https://github.com/HarshalPatel1972/GoSync/releases/latest) and start it in demo mode:
 
 ```bash
-# Linux (use gosync_Darwin_arm64.tar.gz on Apple Silicon, or the .zip on Windows)
+# Linux (on a Mac, use gosync_Darwin_arm64.tar.gz or gosync_Darwin_x86_64.tar.gz)
 curl -L -o gosync.tar.gz https://github.com/HarshalPatel1972/GoSync/releases/latest/download/gosync_Linux_x86_64.tar.gz
 tar -xzf gosync.tar.gz
 
 GOSYNC_INSECURE_DEV_AUTH=true ./gosync-server
+```
+
+On Windows (PowerShell):
+
+```powershell
+Invoke-WebRequest https://github.com/HarshalPatel1972/GoSync/releases/latest/download/gosync_Windows_x86_64.zip -OutFile gosync.zip
+Expand-Archive gosync.zip -DestinationPath gosync
+$env:GOSYNC_INSECURE_DEV_AUTH="true"; .\gosync\gosync-server.exe
 ```
 
 The server listens on `http://localhost:8080` and stores data in `gosync.db`.
@@ -30,8 +38,10 @@ The server listens on `http://localhost:8080` and stores data in `gosync.db`.
 npm install @harshalpatel2868/gosync-client
 ```
 
-It works with Vite and other modern bundlers out of the box; the WebAssembly engine is picked up
-automatically.
+Version 2.0.1 or later works out of the box with Vite and Next.js (both Turbopack and webpack):
+the WebAssembly engine is picked up automatically. These setups are tested on every change. With
+another bundler, if the engine fails to load, copy `gosync.wasm` and `wasm_exec.js` from the
+package into your public folder and pass `wasmUrl` (see the [API reference](/docs/api-reference)).
 
 ## 3. Connect
 
@@ -98,14 +108,21 @@ Create the client once, in the browser only:
 import { useEffect, useState } from 'react';
 import { createClient } from '@harshalpatel2868/gosync-client';
 
-export function useTodos(userId) {
+export function useTodos(userId, getToken) {
   const [todos, setTodos] = useState([]);
   useEffect(() => {
-    let db, stop;
-    createClient({ url: 'wss://sync.example.com/sync', getToken: () => getJwt(), dbName: `app-${userId}` })
-      .then((client) => { db = client; stop = db.watch('todos', setTodos); });
-    return () => { stop?.(); db?.close(); };
-  }, [userId]);
+    let db;
+    let cancelled = false;
+    createClient({ url: 'wss://sync.example.com/sync', getToken, dbName: `app-${userId}` }).then((client) => {
+      if (cancelled) return client.close(); // unmounted while loading
+      db = client;
+      db.watch('todos', setTodos);
+    });
+    return () => {
+      cancelled = true;
+      db?.close(); // close() also stops watch()
+    };
+  }, [userId, getToken]);
   return todos;
 }
 ```

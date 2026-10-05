@@ -12,7 +12,8 @@ description: Deploying, scaling and monitoring GoSync
 - Set `GOSYNC_ALLOWED_ORIGINS` to your app's origins.
 - Use PostgreSQL for anything beyond a single small server.
 - Back up the database.
-- Serve the client's `gosync.wasm` compressed (about 0.8 MB with brotli). Hosts like Vercel and Netlify do this automatically.
+- Serve the client's `gosync.wasm` compressed: about 0.8 MB with brotli instead of 4 MB. Check that your host or CDN compresses it; the package also ships precompressed `gosync.wasm.br` and `.gz` files.
+- Protect unsynced work from browser storage cleanup: browsers can clear a site's data under storage pressure, and Safari clears it after 7 days without a visit unless the app is added to the home screen. For field apps, have users install the app to their home screen, and call `navigator.storage.persist()`.
 - Make sure your load balancer allows WebSockets, with an idle timeout above 60 seconds.
 
 ## Scaling

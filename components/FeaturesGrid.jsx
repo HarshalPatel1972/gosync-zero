@@ -15,7 +15,7 @@ export default function FeaturesGrid() {
       id: "offline",
       title: "True Offline-First",
       description:
-        "Apps continue to work perfectly—read and write—without internet. Data syncs automatically when you're back online.",
+        "Apps keep reading and writing without internet. Changes sync automatically when the connection returns.",
       Icon: WifiOff,
     },
     {
@@ -41,9 +41,9 @@ export default function FeaturesGrid() {
     },
     {
       id: "storage",
-      title: "Massive Storage",
+      title: "Real Local Database",
       description:
-        "Bypasses LocalStorage's 5MB limit. Uses IndexedDB to store gigabytes of offline data in the browser.",
+        "Data lives in IndexedDB, not localStorage, so it isn't capped at 5 MB and survives reloads, restarts and crashes.",
       Icon: Database,
     },
     {
